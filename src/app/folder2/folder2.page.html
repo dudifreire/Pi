@@ -1,0 +1,43 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+
+    </ion-buttons>
+    <ion-title> Contacts </ion-title>
+    <ion-searchbar  slot="end" color="success"
+    [(ngModel)]="searchTerm"
+    (ionChange)="setFilteredItems()"
+    ></ion-searchbar>
+
+
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+  <ion-list>
+
+ <ion-item *ngFor="let aluno of alunos | slice:0:slices" (click)="showModal(aluno)">
+ <ion-button slot="end" size ="small" color = "danger" (click)="presentAlert(aluno);$event.stopPropagation();">
+  <ion-icon name="trash-outline"></ion-icon>
+ </ion-button>
+
+
+  <ion-icon slot ="start" name="person-circle-outline"></ion-icon>
+    {{aluno.nome}}
+  </ion-item>
+
+
+ </ion-list>
+ <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+  <ion-infinite-scroll-content
+    loadingSpinner="bubbles"
+    loadingText="Loading more users...">
+  </ion-infinite-scroll-content>
+</ion-infinite-scroll>
+
+
+</ion-content>

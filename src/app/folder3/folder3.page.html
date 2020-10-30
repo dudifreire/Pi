@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar color = "labsgreen">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Holerites</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card> 
+<ion-grid>
+ 
+  <ion-row class="ion-row">
+    <ion-toolbar color="labsgreen"> 
+    <ion-col  class="txtItensTittle" size="2"><strong> Mês/Ano Referente </strong>
+    </ion-col>
+  <ion-col style="text-align: center;" style="padding-left: 30px;" class="txtItensTittle" size="7"> <strong> Visualizar
+      </strong>
+  </ion-col>
+  <ion-col  class="txtItensTittle" style="padding-left: 40px;" size="3"> <strong>Download
+      </strong>
+  </ion-col>
+</ion-toolbar>
+  </ion-row> 
+  
+<ion-list>
+<ion-item *ngFor="let index of holerites" >
+  <ion-col> 
+  <ion-row class="ion-row">
+    <ion-col  class="txtItensEncomenda" style="display: flex;margin-left: -10px;padding-top: 15px;" size="2"><strong> {{index.name}}/2020 </strong>
+    </ion-col>
+  <ion-col style="text-align: center;padding-left: 40px;"  class="txtItensEncomenda" size="7"> <ion-button color ="success" (click)="testeGit(index.name)"> <ion-icon name="enter-outline"></ion-icon>  </ion-button>
+     
+  </ion-col>
+  <ion-col  class="txtItensEncomenda" size="3" > 
+    <ion-button  color ="success"  (click)="readFilePath()" > 
+      <ion-icon name="download-outline"></ion-icon>
+  </ion-button>
+  </ion-col>
+  
+  </ion-row>
+</ion-col>    
+</ion-item>
+
+</ion-list>
+
+
+
+
+
+
+</ion-grid>
+</ion-card>
+</ion-content>

@@ -1,0 +1,29 @@
+.center {
+    display: block;
+    margin: auto;
+    width: 50%;
+    ion-img{
+      padding-left: 80px;
+      display: flow-root;
+      width: 70%;
+      object-fit: inherit;
+    }
+       
+   }
+//
+  
+ion-content {
+    --background: none;
+    
+    background-image: url("/assets/imagemBola.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: block;
+  } 
+ion-card{   
+    bottom: 10;
+    border: 5px solid black;
+  --background: linear-gradient(to right, #D4D3DD, #EFEFBB);
+    width: 100%;
+    height: 100%;
+}   

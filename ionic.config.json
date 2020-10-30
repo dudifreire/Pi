@@ -1,0 +1,8 @@
+{
+  "name": "sideMenuApp",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}

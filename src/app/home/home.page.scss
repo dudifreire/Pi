@@ -1,0 +1,16 @@
+ion-content{
+    --background: none;
+
+    
+    background-image: url("/assets/imagemBola.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: block;
+}
+.header{
+    color: white;
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+    padding-top: 200px;
+}

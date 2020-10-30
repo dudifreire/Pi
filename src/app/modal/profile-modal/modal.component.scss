@@ -1,0 +1,9 @@
+.my-custom-class .modal-wrapper {
+    background: #222;
+    @media (min-width: 500px)/* The minimum width of the display area, such as a browser window*/
+{
+  .modal-dialog {
+      width: 500px;
+  }
+}
+  }
