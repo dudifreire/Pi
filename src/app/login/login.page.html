@@ -9,8 +9,8 @@
 
   <ion-grid>
    <ion-row  >  
-       <div  style="padding-left: 80px;" class="center">
-      <ion-img  style="padding-left: 80px;" src="./assets/logo.png"> </ion-img>
+       <div  class="center">
+      <ion-img style="padding-right:50px;"   src="./assets/logo.png"> </ion-img>
               </div>
                </ion-row>
                
@@ -19,20 +19,22 @@
 
           <ion-card >
 
-            <ion-card-content>
-
+            <ion-card-content style="margin-bottom: 50px;">
+          
           <ion-item>
-            <ion-label color="medium" position="floating">EMAIL</ion-label>
+            <ion-label style="text-align: center;" color="light" position="floating">EMAIL</ion-label>
             <ion-input [(ngModel)]="user" type="string"></ion-input>
           </ion-item>
            <ion-item>
-              <ion-label color = "medium" position="floating">PASSWORD </ion-label>
+              <ion-label style="text-align: center;" color = "light" position="floating">PASSWORD </ion-label>
               <ion-input type="string" ></ion-input>
             </ion-item>
-              <ion-button expand="block" color = "success" (click) =LogIn()  >LOG IN  </ion-button>
+        
+              <ion-button expand="block" color = "secondary" (click) =LogIn()  >LOG IN  </ion-button>
             <div style="display: flex; justify-content: center;">
-            <ion-button size="small" color = "medium" fill ="clear" (click)=register()> Quer ser um colaborador? Registre-se.  </ion-button>
+            <ion-button size="small" color = "light" fill ="clear" (click)=register()> Quer ser um colaborador? Registre-se.  </ion-button>
           </div>
+          
         </ion-card-content>
         </ion-card>
       </ion-col>

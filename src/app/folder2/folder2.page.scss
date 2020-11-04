@@ -1,3 +1,15 @@
 .my-custom-class .alert-wrapper {
   background: #e5e5e5;
 }
+.cardObs{
+  width: 100%;
+  border: 3px solid darkgreen;
+ 
+}
+ion-content {
+  --background: none;
+  background-image: url("/assets/criançafutebol.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+
+}

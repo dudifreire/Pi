@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { Folder2PageRoutingModule } from './folder2-routing.module';
 import { Folder2Page } from './folder2.page';
 
+
 @NgModule({
   imports: [
     CommonModule,

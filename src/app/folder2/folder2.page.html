@@ -1,43 +1,100 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-
-    </ion-buttons>
-    <ion-title> Contacts </ion-title>
-    <ion-searchbar  slot="end" color="success"
-    [(ngModel)]="searchTerm"
-    (ionChange)="setFilteredItems()"
-    ></ion-searchbar>
 
 
-
-  </ion-toolbar>
-</ion-header>
 
 <ion-content>
+ <!--  <ion-button color="secondary" (click)="setChamada()">Fazer chamada
+
+  </ion-button> -->
+  <ng-container *ngIf="chamadaAtiva">
+    <ion-card>
+      <ion-toolbar color="secondary">
+        <div style="text-align: center;"> 
+        <ion-card-title color="light">
+          Chamadas          
+        </ion-card-title>
+      </div> 
+      </ion-toolbar>
 
 
-  <ion-list>
+      <form [formGroup]="chamada">
+        <!--  #C (ionChange)="setColaboradorResponsavel(C.value)" -->
+        <ion-list>
+          <ion-select formControlName="categoria"
+            formControlName="categoria" name="Categoria" placeholder="Categoria"> Categoria
+            <ion-select-option name="sub9" value="sub9"> sub 9 </ion-select-option>
+            <ion-select-option name="sub11" value="sub11"> sub 11 </ion-select-option>
+            <ion-select-option name="sub13" value="sub13"> sub 13 </ion-select-option>
+            <ion-select-option name="sub16" value="sub16"> sub 16 </ion-select-option>
+          </ion-select>
+          <ion-select  placeholder="Professor responsavel" formControlName="professor" *ngIf="colaboradorResponsavel"> 
+            <ion-select-option name="Professor" *ngFor="let professores of colaboradorResponsavel" value=professores.nome>{{professores.nome}}
 
- <ion-item *ngFor="let aluno of alunos | slice:0:slices" (click)="showModal(aluno)">
- <ion-button slot="end" size ="small" color = "danger" (click)="presentAlert(aluno);$event.stopPropagation();">
-  <ion-icon name="trash-outline"></ion-icon>
- </ion-button>
+            </ion-select-option>
+          
+          </ion-select>
+          <ion-item>
+            <ion-label position="stacked">Dia da Chamada<ion-text color="danger">*</ion-text>
+            </ion-label>
+            <ion-datetime displayFormat="DD MM YY" formControlName="data"></ion-datetime>
+          </ion-item>
+          <ion-card class="cardObs">
+            <ion-textarea formControlName="obs" placeholder="Observação">
+            </ion-textarea>
+          </ion-card>
+
+        </ion-list>
+       
+       
+
+      </form>
+    </ion-card>
+  </ng-container>
+  <ng-container *ngIf="chamadaAtiva">
+    <ion-card> 
+      <ion-toolbar color="secondary">
+        <ion-searchbar  slot="end" color="secondary"
+        [(ngModel)]="searchTerm"
+        (ionChange)="setFilteredItems()"
+        ></ion-searchbar>
+      </ion-toolbar>
+
+    <ion-list>
+      <ion-grid> 
+        <ion-list-header >
+          
+       <ion-row>
+         <ion-col size="auto"> <ion-label  style="padding-left: 60px;" > <strong>   Alunos </strong>  </ion-label> </ion-col>
+         <ion-col size="auto"> <ion-label style="padding-left:700px;"> <strong>   Presente </strong> </ion-label>  </ion-col>
+       </ion-row>
+       
+        </ion-list-header>
+     
+        
+
+      <ion-item *ngFor="let aluno of alunos | slice:0:slices;let i = index" (click)="showModal(aluno)">
+        
+        
 
 
-  <ion-icon slot ="start" name="person-circle-outline"></ion-icon>
-    {{aluno.nome}}
-  </ion-item>
+        <ion-icon slot="start" name="person-circle-outline"></ion-icon>
+        {{aluno.nome}}
+        <ion-checkbox #c (ionChange)="teste(c.value,c.checked, i);$event.stopPropagation();" color="success" slot="end"> </ion-checkbox>
+        <ion-button slot="end" size="small" color="danger" (click)="presentAlert(aluno);$event.stopPropagation();">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+     
+     
+    </ion-grid>
+    </ion-list>
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more users...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+     <ion-button color="secondary" (click)="fazerChamada(alunos)" expand="block"> FAZER CHAMADA</ion-button> 
+  </ion-card>
 
-
- </ion-list>
- <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
-  <ion-infinite-scroll-content
-    loadingSpinner="bubbles"
-    loadingText="Loading more users...">
-  </ion-infinite-scroll-content>
-</ion-infinite-scroll>
-
-
+ 
+  </ng-container>
+          
 </ion-content>

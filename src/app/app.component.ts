@@ -28,9 +28,14 @@ export class AppComponent implements OnInit {
       icon: 'people'
     },
     {
-      title: 'Relatorio',
+      title: 'Relatório',
       url: 'folder3',
       icon: 'document'
+    },
+    {
+      title:'Sair',
+      url:'login',
+      icon:'log-out'
     },
   ]; 
   

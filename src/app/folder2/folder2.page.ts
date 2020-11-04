@@ -1,10 +1,11 @@
+import { HelperService } from './../services/helper.service';
 import { Component, OnInit, ViewChild,  } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { IonInfiniteScroll } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 import { ModalComponent } from '../modal/profile-modal/modal.component';
 import { AlertController } from '@ionic/angular';
-
+import { FormControl, FormGroup , Validators , FormBuilder} from '@angular/forms';
 
 
 
@@ -18,63 +19,12 @@ import { AlertController } from '@ionic/angular';
 export class Folder2Page implements OnInit {
 
    public searchTerm: '';
-   public items: any[] = [{first_name: 'Con', last_name: 'Capineer', endereco: 'Rua Visconde de Nácar, 876 - Centro, Curitiba - PR, 80410-201'},
-   {first_name: 'Milicent', last_name: 'Clara', endereco: 'R. Francisco Torres, 830 - Centro, Curitiba - PR, 80060-130'},
-   {first_name: 'Errol', last_name: 'Pallent', endereco: 'Rua Orestes Camilli, 91 - Prado Velho, Curitiba - PR, 80215-000'},
-   {first_name: 'Rea', last_name: 'Sanbrooke', endereco: 'R. Des. Westphalen, 56 - Centro, Curitiba - PR, 80010-110'},
-   {first_name: 'Charmion', last_name: 'Suddock', endereco: 'R. Pedro Ivo, 204 - Centro, Curitiba - PR, 80010-020'},
-   {first_name: 'Maureene', last_name: 'Hobbert', endereco: 'Av. Mal. Floriano Peixoto, 4742 - Hauer, Curitiba - PR, 81270-410'},
-   {first_name: 'Jonie', last_name: 'Bragger', endereco: 'Av. Rep. Argentina, 1115 - Água Verde, Curitiba - PR, 80620-010'},
-   {first_name: 'Cinda', last_name: 'Basler', endereco: 'R. Mal. Deodoro, 869 - Centro, Curitiba - PR, 80060-010'},
-   {first_name: 'Vicki', last_name: 'Goodger', endereco: 'Rua Professora Maria de Assumpção, 215 - Hauer, Curitiba - PR, 81630-040'},
-   {first_name: 'Adelaida', last_name: 'Zeal' , endereco: 'Av. Iraí, 611a - Weissópolis, Pinhais - PR, 83321-000'},
-   {first_name: 'Morly', last_name: 'Shadfourth', endereco: 'Av. Pres. Kennedy, 757 - Rebouças, Curitiba - PR, 80220-200'},
-   {first_name: 'Clemmie', last_name: 'Hall-Gough', endereco: 'Av. Iraí, 611a - Weissópolis, Pinhais - PR, 83321-000'},
-   {first_name: 'Clerc', last_name: 'Bainbrigge', endereco: 'Av. Iraí, 611a - Weissópolis, Pinhais - PR, 83321-000'},
-   {first_name: 'Gloriana', last_name: 'Rizzolo', endereco: 'Av. Iraí, 611a - Weissópolis, Pinhais - PR, 83321-000'},
-   {first_name: 'Clarke', last_name: 'Glendining', endereco: 'Av. Mal. Floriano Peixoto, 4742 - Hauer, Curitiba - PR, 81270-410'},
-   {first_name: 'Courtnay', last_name: 'Labrone', endereco: 'Av. Mal. Floriano Peixoto, 4742 - Hauer, Curitiba - PR, 81270-410'},
-   {first_name: 'Elfrieda', last_name: 'Nansom', endereco: 'Av. Mal. Floriano Peixoto, 4742 - Hauer, Curitiba - PR, 81270-410'},
-   {first_name: 'Calypso', last_name: 'Gislebert', endereco: 'Av. Pres. Kennedy, 757 - Rebouças, Curitiba - PR, 80220-200'},
-   {first_name: 'Denny', last_name: 'Cordova', endereco: 'Av. Iraí, 611a - Weissópolis, Pinhais - PR, 83321-000'},
-   {first_name: 'Agosto', last_name: 'Leadbetter', endereco: 'Rua Orestes Camilli, 91 - Prado Velho, Curitiba - PR, 80215-000'},
-   {first_name: 'Callida', last_name: 'Iglesia', endereco: 'Av. Pres. Kennedy, 757 - Rebouças, Curitiba - PR, 80220-200'},
-   {first_name: 'Merl', last_name: 'Pankhurst.', endereco: 'Av. Iraí, 611a - Weissópolis, Pinhais - PR, 83321-000'},
-   {first_name: 'Saunder', last_name: 'Bellino', endereco: 'Av. Pres. Kennedy, 757 - Rebouças, Curitiba - PR, 80220-200'},
-   {first_name: 'Nev', last_name: 'Pourveer', endereco: 'Av. Iraí, 611a - Weissópolis, Pinhais - PR, 83321-000'},
-   {first_name: 'Barton', last_name: 'McGurk', endereco: 'Rua Orestes Camilli, 91 - Prado Velho, Curitiba - PR, 80215-000'},
-   {first_name: 'Nappy', last_name: 'MacCollom', endereco: 'Av. Pres. Kennedy, 757 - Rebouças, Curitiba - PR, 80220-200'},
-   {first_name: 'Silvester', last_name: 'Kirsche', endereco: 'Av. Iraí, 611a - Weissópolis, Pinhais - PR, 83321-000'},
-   {first_name: 'Gideon', last_name: 'Mucklo', endereco: 'R. Francisco Torres, 830 - Centro, Curitiba - PR, 80060-130'},
-   {first_name: 'Debby', last_name: 'Pavey', endereco: 'R. Francisco Torres, 830 - Centro, Curitiba - PR, 80060-130'},
-   {first_name: 'Matthew', last_name: 'Knutsen', endereco: 'Av. Iraí, 611a - Weissópolis, Pinhais - PR, 83321-000'},
-   {first_name: 'Diahann', last_name: 'McCardle', endereco: 'Av. Pres. Kennedy, 757 - Rebouças, Curitiba - PR, 80220-200'},
-   {first_name: 'Gelya', last_name: 'Batter', endereco: 'R. Francisco Torres, 830 - Centro, Curitiba - PR, 80060-130'},
-   {first_name: 'Millard', last_name: 'McCrie', endereco: 'Av. Iraí, 611a - Weissópolis, Pinhais - PR, 83321-000'},
-   {first_name: 'Cy', last_name: 'Suart', endereco: 'R. Francisco Torres, 830 - Centro, Curitiba - PR, 80060-130'},
-   {first_name: 'Dorothy', last_name: 'Gershom', endereco: 'Av. Pres. Kennedy, 757 - Rebouças, Curitiba - PR, 80220-200'},
-   {first_name: 'Emilie', last_name: 'Sauvage', endereco: 'R. Francisco Torres, 830 - Centro, Curitiba - PR, 80060-130'},
-   {first_name: 'Marthe', last_name: 'Maureen', endereco: 'Av. Iraí, 611a - Weissópolis, Pinhais - PR, 83321-000'},
-   {first_name: 'Currie', last_name: 'Bogies', endereco: 'Rua Orestes Camilli, 91 - Prado Velho, Curitiba - PR, 80215-000'},
-   {first_name: 'Morse', last_name: 'Sterricker', endereco: 'Av. Pres. Kennedy, 757 - Rebouças, Curitiba - PR, 80220-200'},
-   {first_name: 'Fionna', last_name: 'Ludmann', endereco: 'Rua Orestes Camilli, 91 - Prado Velho, Curitiba - PR, 80215-000'},
-   {first_name: 'Claude', last_name: 'Nears', endereco: 'Av. Pres. Kennedy, 757 - Rebouças, Curitiba - PR, 80220-200'},
-   {first_name: 'Caesar', last_name: 'Cutler', endereco: 'Rua Orestes Camilli, 91 - Prado Velho, Curitiba - PR, 80215-000'},
-   {first_name: 'Barrett', last_name: 'Venables', endereco: 'Rua Orestes Camilli, 91 - Prado Velho, Curitiba - PR, 80215-000'},
-   {first_name: 'Mellicent', last_name: 'Skynner', endereco: 'Av. Pres. Kennedy, 757 - Rebouças, Curitiba - PR, 80220-200'},
-   {first_name: 'Dorthea', last_name: 'Guwer', endereco: 'Rua Orestes Camilli, 91 - Prado Velho, Curitiba - PR, 80215-000'},
-   {first_name: 'Ric', last_name: 'Collcott', endereco: 'Av. Pres. Kennedy, 757 - Rebouças, Curitiba - PR, 80220-200'},
-   {first_name: 'Netti', last_name: 'Orred', endereco: 'Rua Orestes Camilli, 91 - Prado Velho, Curitiba - PR, 80215-000'},
-   {first_name: 'Barnie', last_name: 'Hebdon', endereco: 'Rua Orestes Camilli, 91 - Prado Velho, Curitiba - PR, 80215-000'},
-   {first_name: 'Galen', last_name: 'Lammert', endereco: 'Av. Pres. Kennedy, 757 - Rebouças, Curitiba - PR, 80220-200'},
-   {first_name: 'Rosetta', last_name: 'Philot', endereco: 'Rua Orestes Camilli, 91 - Prado Velho, Curitiba - PR, 80215-000'}];
-
-
-
-
-
+   public chamada: FormGroup
+   public chamadaAtiva = false;
    public alunos: any = [];
-   public fullList = this.items;
+   public fullList = this.alunos;
+   public colaboradorResponsavel: any = [];
+   public chamadaList: any = [];
 
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
@@ -84,11 +34,68 @@ export class Folder2Page implements OnInit {
 
     private menu: MenuController,
     public modalController: ModalController,
-    public alertController: AlertController
+    public alertController: AlertController,
+    public fb: FormBuilder,
+    public helper :HelperService
   ) { }
+  
+  setChamadaForm(){
+    this.chamada = this.fb.group({
+      aluno: [null, [Validators.required]],
+      data: [null, [Validators.required]],
+      professor: [null, [Validators.required]],
+      categoria: [null, [Validators.required]],
+      obs: [null,[Validators.required]]
+      
+    })
+  }
+  setChamada(){
+    this.setChamadaForm();
+    this.chamadaAtiva = true;
+    const professores = JSON.parse(localStorage.getItem('cadastroVoluntario'));
+    this.colaboradorResponsavel.push(professores) 
+    
+    
+  }
+  teste(checked: boolean,value, index: number) {
+    console.log(checked)
+    console.log(value);
+    console.log(index);
+    this.alunos[index].presente = value;
+    console.log(this.alunos);
+    
+   }
+  fazerChamada(aluno){
+    this.chamadaList = [];
+    console.log(this.chamadaList);
+    this.chamada.patchValue({
+      aluno: aluno
+    })
+    console.log(this.chamada.value);
+    this.chamadaList.push(this.chamada.value);
 
-
-
+    console.log(this.chamadaList);
+    localStorage.setItem('chamadaList',JSON.stringify(this.chamadaList));
+    
+    
+  }
+  setListChamada(){
+    if(this.chamadaList){
+      this.chamadaList = JSON.parse(localStorage.getItem('chamadaList'));
+    }
+  }
+  categoriaChange(categoria){
+   this.alunos = JSON.parse(localStorage.getItem('"'+ categoria + '"'))
+  }
+  submitChamada(){
+    localStorage.setItem('chamadaList', JSON.stringify(this.chamada));
+    this.helper.toast('Chamada realizada com sucesso!','success');
+  }
+ // setColaboradorResponsavel(categoria){
+ // this.colaboradorResponsavel = JSON.parse(localStorage.getItem('colaborador'+'"'+ categoria + '"'))
+//  this.colaboradorResponsavel = JSON.parse(localStorage.getItem('cadastroVoluntario'))
+//  console.log(this.colaboradorResponsavel);
+//  }
   slices = 12;
   loadData(event) {
 
@@ -117,10 +124,10 @@ export class Folder2Page implements OnInit {
   }
 
   removeUser(item){
-      const index = this.items.indexOf(item);
+      const index = this.alunos.indexOf(item);
 
       if (index > -1){
-      this.items.splice(index, 1);
+      this.alunos.splice(index, 1);
 
 
     }
@@ -130,12 +137,14 @@ export class Folder2Page implements OnInit {
   }
    filterItems(searchTerm) {
 
-      return this.items.filter(item => {
+      return this.alunos.filter(item => {
       return item.first_name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 ||
       item.last_name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
     });
   }
-
+  ionViewDidEnter(){
+   // this.setListChamada();
+  }
 
   ngOnInit() {
     // tslint:disable-next-line: deprecation
@@ -143,12 +152,14 @@ export class Folder2Page implements OnInit {
    //  this.setFilteredItems();
     this.menu.enable(true, 'main-menu');
     this.alunos = JSON.parse(localStorage.getItem('cadastroAluno'));
+    this.setChamada();
+    console.log(this.alunos);
   }
   setFilteredItems() {
 
-    this.items = this.filterItems(this.searchTerm);
+    this.alunos = this.filterItems(this.searchTerm);
     if (this.searchTerm === ''){
-      this.items = this.fullList;
+      this.alunos = this.fullList;
     }
   }
 
