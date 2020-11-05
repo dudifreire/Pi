@@ -138,6 +138,7 @@ export class FolderPage implements OnInit {
     this.menu.enable(true, 'main-menu');
     this.setForm();
     this.setFormCategoria()
+    this.alunos = JSON.parse(localStorage.getItem('cadastroAluno'));
     
   }
 

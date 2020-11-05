@@ -1,151 +1,343 @@
 <ion-header>
-  <ion-toolbar color = "secondary">
+
+  <ion-toolbar color="secondary">
+
     <ion-buttons slot="start">
+
       <ion-menu-button></ion-menu-button>
+
     </ion-buttons>
+
     <ion-title>Cadastros</ion-title>
+
   </ion-toolbar>
+
 </ion-header>
 
 
+<ion-content [fullscreen]="true" no-bounce>
 
-<ion-content [fullscreen]="true">
+  <ion-grid>
 
-   
-     
+    <ion-card>
 
-        <ion-card>
-          <div style="display: flex; justify-content: center;">
-            <ion-toolbar color="secondary"> 
-            <ion-card-header>
-              <ion-card-title style="color: white;text-align: center;">Cadastros</ion-card-title>
-            </ion-card-header>
-          </ion-toolbar>
-          </div>
+      <div style="display: flex; justify-content: center">
 
-          <ion-card-content>
-            <ion-select placeholder="Selecione o tipo de Cadastro desejado" #C (ionChange)="setTipoForm(C.value)">
-              <ion-select-option placeholder="Aluno" value="aluno"> Aluno </ion-select-option>
-              <ion-select-option placeholder="Categoria" value="categoria"> Categoria </ion-select-option>
-            </ion-select>
-            <ng-container *ngIf="tipoAluno == true;">
-              <form [formGroup]="form">
-                <ion-list lines="full">
+        <ion-toolbar color="secondary">
+
+          <ion-card-header>
+
+            <ion-card-title style="color: white; text-align: center">Cadastros</ion-card-title>
+
+          </ion-card-header>
+
+        </ion-toolbar>
+
+      </div>
 
 
+      <ion-card-content>
 
-                  <ion-select formControlName="categoria" placeholder="Categoria">
-                    <ion-select-option name="sub9" value="sub9"> sub 9 </ion-select-option>
-                    <ion-select-option name="sub11" value="sub11"> sub 11 </ion-select-option>
-                    <ion-select-option name="sub13" value="sub13"> sub 13 </ion-select-option>
-                    <ion-select-option name="sub16" value="sub16"> sub 16 </ion-select-option>
-                  </ion-select>
+        <ion-item>
+
+          <ion-label position="stacked">
+
+            <strong> Tipo de Cadastro </strong>
+
+            <ion-text style="margin-left: 3px" color="danger">*</ion-text>
+
+          </ion-label>
+
+          <ion-select placeholder="Selecione o tipo de Cadastro desejado" #C (ionChange)="setTipoForm(C.value)">Cadastro
+
+            <ion-select-option placeholder="Aluno" value="aluno">
+
+              Aluno
+
+            </ion-select-option>
+
+            <ion-select-option placeholder="Categoria" value="categoria">
+
+              Categoria
+
+            </ion-select-option>
+
+          </ion-select>
+
+        </ion-item>
+
+
+        <ng-container *ngIf="tipoAluno == true;">
+
+          <form [formGroup]="form">
+
+            <ion-list lines="full">
+
+              <ion-row>
+
+                <ion-col>
+
+                  <ion-item>
+
+                    <ion-label position="stacked">
+
+                      <strong> Categoria do Aluno </strong>
+
+                      <ion-text style="margin-left: 3px" color="danger">*</ion-text>
+
+                    </ion-label>
+
+                    <ion-select formControlName="categoria" placeholder="Categoria">
+
+                      <ion-select-option name="sub9" value="sub9">
+
+                        sub 9
+
+                      </ion-select-option>
+
+                      <ion-select-option name="sub11" value="sub11">
+
+                        sub 11
+
+                      </ion-select-option>
+
+                      <ion-select-option name="sub13" value="sub13">
+
+                        sub 13
+
+                      </ion-select-option>
+
+                      <ion-select-option name="sub16" value="sub16">
+
+                        sub 16
+
+                      </ion-select-option>
+
+                    </ion-select>
+
+                  </ion-item>
+
+                </ion-col>
+
+                <ion-col>
 
                   <ion-item class="mt-2">
-                    <ion-label position="stacked">Nome <ion-text color="danger">*</ion-text>
+
+                    <ion-label position="stacked"><strong> Nome </strong>
+                      <ion-text style="margin-left: 3px;" color="danger">*</ion-text>
+
                     </ion-label>
+
                     <ion-input formControlName="nome" type="text"></ion-input>
-                  </ion-item>
-                  <ion-item>
-                    <ion-label position="stacked">Responsavel <ion-text color="danger">*</ion-text>
-                    </ion-label>
-                    <ion-input formControlName="responsavel" type="text" required></ion-input>
-                  </ion-item>
-                  <ion-item>
-                    <ion-label position="stacked">Telefone do Responsavel<ion-text color="danger">*</ion-text>
-                    </ion-label>
-                    <ion-input placeholder="DDD + Telefone, sem caracteres especiais" formControlName="foneResponsavel"
-                      type="number" required>
-                    </ion-input>
-                    <div class="txtErros" *ngIf="forms.fone?.errors">
-                      <ion-text *ngIf="forms.fone?.errors.celInvalido" color="danger">
-                        É necessario um telefone com whatsApp válido.
-                      </ion-text>
-                    </div>
-                  </ion-item>
-                  <ion-item>
-                    <ion-label position="stacked">Telefone do Aluno<b></b>
-                    </ion-label>
-                    <ion-input formControlName="foneAluno" type="number"></ion-input>
+
                   </ion-item>
 
-                  <ion-item class="ion-margin-bottom">
-                    <ion-label position="stacked">Cep<ion-text color="danger">*</ion-text>
+                </ion-col>
+
+                <ion-col>
+
+                  <ion-item>
+
+                    <ion-label position="stacked"><strong> Responsável </strong>
+                      <ion-text style="margin-left: 3px;" color="danger">*</ion-text>
+
                     </ion-label>
+
+                    <ion-input formControlName="responsavel" type="text" required></ion-input>
+
+                  </ion-item>
+
+                </ion-col>
+
+              </ion-row>
+
+              <ion-row>
+
+                <ion-col>
+
+                  <ion-item class="ion-margin-bottom">
+
+                    <ion-label position="stacked"><strong> Data de Nascimento </strong>
+                      <ion-text style="margin-left: 3px;" color="danger">*</ion-text>
+
+                    </ion-label>
+
+                    <ion-datetime displayFormat="DD MM YY" formControlName="date"></ion-datetime>
+
+                  </ion-item>
+
+                </ion-col>
+
+                <ion-col>
+
+                  <ion-item>
+
+                    <ion-label position="stacked"><strong> Telefone do Responsável </strong>
+                      <ion-text style="margin-left: 3px;" color="danger">*</ion-text>
+
+                    </ion-label>
+
+                    <ion-input placeholder="DDD + Telefone, sem caracteres especiais" formControlName="foneResponsavel"
+                      type="number" required>
+
+                    </ion-input>
+
+                    <div class="txtErros" *ngIf="forms.fone?.errors">
+
+                      <ion-text *ngIf="forms.fone?.errors.celInvalido" color="danger">
+
+                        É necessario um telefone com whatsApp válido.
+
+                      </ion-text>
+
+                    </div>
+
+                  </ion-item>
+
+                </ion-col>
+
+                <ion-col>
+
+                  <ion-item>
+
+                    <ion-label position="stacked"><strong> Telefone do Aluno </strong>
+                      <ion-text style="margin-left: 3px;" color="danger">*</ion-text>
+
+                    </ion-label>
+
+                    <ion-input formControlName="foneAluno" type="number"></ion-input>
+
+                  </ion-item>
+
+                </ion-col>
+
+              </ion-row>
+
+              <ion-row>
+
+                <ion-col>
+
+                  <ion-item class="ion-margin-bottom">
+
+                    <ion-label position="stacked"><strong> Cep </strong>
+                      <ion-text style="margin-left: 3px;" color="danger">*</ion-text>
+
+                    </ion-label>
+
                     <ion-input type="text" (ionBlur)="getCep()" formControlName="cep"></ion-input>
+
                   </ion-item>
+
+                </ion-col>
+
+                <ion-col>
+
                   <ion-item class="ion-margin-bottom">
-                    <ion-label position="stacked">Rua <ion-text color="danger">*</ion-text>
+
+                    <ion-label position="stacked"><strong> Rua </strong>
+                      <ion-text style="margin-left: 3px;" color="danger">*</ion-text>
+
                     </ion-label>
+
                     <ion-input type="text" formControlName="rua"></ion-input>
+
                   </ion-item>
+
+                </ion-col>
+
+                <ion-col>
+
                   <ion-item class="ion-margin-bottom">
-                    <ion-label position="stacked">Numero<ion-text color="danger">*</ion-text>
+
+                    <ion-label position="stacked"><strong> Numero </strong>
+                      <ion-text style="margin-left: 3px;" color="danger">*</ion-text>
+
                     </ion-label>
+
                     <ion-input type="text" formControlName="numero"></ion-input>
+
                   </ion-item>
+
+                </ion-col>
+
+              </ion-row>
+
+              <ion-row>
+
+                <ion-col>
+
                   <ion-item class="ion-margin-bottom">
-                    <ion-label position="stacked">Bairro<ion-text color="danger">*</ion-text>
+
+                    <ion-label position="stacked"><strong> Bairro </strong>
+                      <ion-text style="margin-left: 3px;" color="danger">*</ion-text>
+
                     </ion-label>
+
                     <ion-input type="text" formControlName="bairro"></ion-input>
+
                   </ion-item>
+
+                </ion-col>
+
+                <ion-col>
+
                   <ion-item class="ion-margin-bottom">
-                    <ion-label position="stacked">Cidade<ion-text color="danger">*</ion-text>
+
+                    <ion-label position="stacked"><strong> Cidade </strong>
+                      <ion-text style="margin-left: 3px;" color="danger">*</ion-text>
                     </ion-label>
                     <ion-input type="text" formControlName="cidade"></ion-input>
                   </ion-item>
+                </ion-col>
+                <ion-col>
                   <ion-item class="ion-margin-bottom">
-                    <ion-label position="stacked">UF<ion-text color="danger">*</ion-text>
+                    <ion-label position="stacked"><strong> Estado </strong>
+                      <ion-text style="margin-left: 3px;" color="danger">*</ion-text>
                     </ion-label>
                     <ion-input type="text" formControlName="uf"></ion-input>
                   </ion-item>
-                  <ion-item class="ion-margin-bottom">
-                    <ion-label position="stacked">Data de Nascimento<ion-text color="danger">*</ion-text>
-                    </ion-label>
-                    <ion-datetime displayFormat="DD MM YY" formControlName="date"></ion-datetime>
-                  </ion-item>
-
-
-                  <ion-button color="secondary" style="margin-top: 6px;" expand="block" (click)="submitForm()" [disabled]="form.invalid">
-                    Enviar dados</ion-button>
-                    
-
-
-                </ion-list>
-
-
-                <!-- {{frmMain.value | json}} -->
-
-              </form>
-            </ng-container>
-            <ng-container *ngIf="tipoCategoria==true;">
-              <form [formGroup]="formCategoria">
-                <ion-list lines="full">
-
-
+                </ion-col>
+              </ion-row>
+              <ion-button color="secondary" style="margin-top: 6px" expand="block" (click)="submitForm()"
+                [disabled]="form.invalid">
+                Enviar dados</ion-button>
+            </ion-list>
+            <!-- {{frmMain.value | json}} -->
+          </form>
+        </ng-container>
+        <ng-container *ngIf="tipoCategoria==true;">
+          <form [formGroup]="formCategoria">
+            <ion-list lines="full">
+              <ion-row>
+                <ion-col>
                   <ion-item class="mt-2">
-                    <ion-label position="stacked">Nome da Categoria <ion-text color="danger">*</ion-text>
+                    <ion-label position="stacked"><strong> Nome da Categoria </strong>
+                      <ion-text style="margin-left: 3px;" color="danger">*</ion-text>
                     </ion-label>
                     <ion-input formControlName="nome" type="text"></ion-input>
                   </ion-item>
-
-                  <ion-select formControlName="voluntario" placeholder="Voluntario">
-                    <ion-select-option *ngFor="let colaboradores of colaboradores"> Colaborador
-
-                    </ion-select-option>
-
-                  </ion-select>
-                  <ion-card class="cardObs">
-                    <ion-textarea formControlName="descricao" placeholder="Observação" >
-                    </ion-textarea>
-                  </ion-card>
-
-                </ion-list>
-              </form>
-
-            </ng-container>
-          </ion-card-content>
-        </ion-card>
-    
-
+                </ion-col>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="stacked"><strong> Colaborador Responsável </strong>
+                      <ion-text style="margin-left: 3px;" color="danger">*</ion-text>
+                    </ion-label>
+                    <ion-select formControlName="voluntario" placeholder="Voluntario">
+                      <ion-select-option *ngFor="let colaboradores of colaboradores">
+                        Colaborador
+                      </ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+                <ion-card class="cardObs">
+                  <ion-textarea formControlName="descricao" placeholder="Observação">
+                  </ion-textarea>
+                </ion-card>
+              </ion-row>
+            </ion-list>
+          </form>
+        </ng-container>
+      </ion-card-content>
+    </ion-card>
+  </ion-grid>
 </ion-content>

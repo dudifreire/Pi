@@ -1,11 +1,11 @@
 import { HelperService } from './../services/helper.service';
-import { Component, OnInit, ViewChild,  } from '@angular/core';
+import { Component, OnInit, ViewChild, } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { IonInfiniteScroll } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 import { ModalComponent } from '../modal/profile-modal/modal.component';
 import { AlertController } from '@ionic/angular';
-import { FormControl, FormGroup , Validators , FormBuilder} from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 
 
@@ -18,14 +18,15 @@ import { FormControl, FormGroup , Validators , FormBuilder} from '@angular/forms
 })
 export class Folder2Page implements OnInit {
 
-   public searchTerm: '';
-   public chamada: FormGroup
-   public chamadaAtiva = false;
-   public alunos: any = [];
-   public fullList = this.alunos;
-   public colaboradorResponsavel: any = [];
-   public chamadaList: any = [];
-
+  public searchTerm: '';
+  public chamada: FormGroup
+  public chamadaAtiva = false;
+  public alunos: any = [];
+  public fullList = this.alunos;
+  public colaboradorResponsavel: any =  [];
+  public chamadaList: any = [];
+  public formAlunos;
+  public uncheckAll = true; 
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
 
@@ -36,76 +37,107 @@ export class Folder2Page implements OnInit {
     public modalController: ModalController,
     public alertController: AlertController,
     public fb: FormBuilder,
-    public helper :HelperService
+    public helper: HelperService
   ) { }
-  
-  setChamadaForm(){
+
+  ngOnInit() {
+    // tslint:disable-next-line: deprecation
+    //  this.loadData(event);Yes
+    //  this.setFilteredItems();
+    this.menu.enable(true, 'main-menu');
+    this.alunos = JSON.parse(localStorage.getItem('cadastroAluno'));
+    this.setChamada();
+    console.log(this.alunos);
+    this.setListChamada();
+  }
+
+  setChamadaForm() {
     this.chamada = this.fb.group({
-      aluno: [null, [Validators.required]],
+      aluno: [null],
       data: [null, [Validators.required]],
       professor: [null, [Validators.required]],
       categoria: [null, [Validators.required]],
-      obs: [null,[Validators.required]]
-      
+      obs: [null, [Validators.required]]
+
     })
   }
-  setChamada(){
+  setChamada() {
     this.setChamadaForm();
     this.chamadaAtiva = true;
     const professores = JSON.parse(localStorage.getItem('cadastroVoluntario'));
-    this.colaboradorResponsavel.push(professores) 
+    if(professores){
+      this.colaboradorResponsavel.push(professores)
+    }
     
-    
+
   }
-  teste(checked: boolean,value, index: number) {
-    console.log(checked)
-    console.log(value);
-    console.log(index);
+  setPresente( value, index: number) {
     this.alunos[index].presente = value;
     console.log(this.alunos);
-    
-   }
-  fazerChamada(aluno){
-    this.chamadaList = [];
-    console.log(this.chamadaList);
-    this.chamada.patchValue({
-      aluno: aluno
-    })
-    console.log(this.chamada.value);
-    this.chamadaList.push(this.chamada.value);
 
-    console.log(this.chamadaList);
-    localStorage.setItem('chamadaList',JSON.stringify(this.chamadaList));
-    
-    
   }
-  setListChamada(){
-    if(this.chamadaList){
-      this.chamadaList = JSON.parse(localStorage.getItem('chamadaList'));
+  setListChamada() {
+    this.chamadaList = JSON.parse(localStorage.getItem('chamadaList'));
+    if (!this.chamadaList){
+      this.chamadaList = [];
     }
   }
-  categoriaChange(categoria){
-   this.alunos = JSON.parse(localStorage.getItem('"'+ categoria + '"'))
+
+  setBuscarAlunos() {
+
+    this.alunos = this.BuscarAlunos(this.searchTerm);
+    if (this.searchTerm === '') {
+      this.alunos = this.fullList;
+    }
   }
-  submitChamada(){
-    localStorage.setItem('chamadaList', JSON.stringify(this.chamada));
-    this.helper.toast('Chamada realizada com sucesso!','success');
+  fazerChamada(aluno) {
+    console.log(this.chamadaList);
+    var arrayAlunosChamada = []
+    for (var index in aluno) {
+      const formAluno = {
+        'Aluno': aluno[index].nome,
+        'presente': aluno[index].presente
+      }
+      arrayAlunosChamada.push(formAluno);
+      console.log(formAluno);
+    }
+    console.log(arrayAlunosChamada);
+    this.chamada.patchValue({
+      aluno: arrayAlunosChamada
+    })
+    console.log(this.chamada.value);
+    console.log(this.chamadaList);
+    this.chamadaList.push(this.chamada.value);
+    localStorage.setItem('chamadaList', JSON.stringify(this.chamadaList));
+    console.log(this.chamadaList);
+    
   }
- // setColaboradorResponsavel(categoria){
- // this.colaboradorResponsavel = JSON.parse(localStorage.getItem('colaborador'+'"'+ categoria + '"'))
-//  this.colaboradorResponsavel = JSON.parse(localStorage.getItem('cadastroVoluntario'))
-//  console.log(this.colaboradorResponsavel);
-//  }
+  submitChamada(aluno) {
+    this.uncheckAll= false;
+    this.fazerChamada(aluno);
+    this.chamada.reset();
+    this.helper.toast('Chamada realizada com sucesso!', 'success');
+   
+  }
+  categoriaChange(categoria) {
+    this.alunos = JSON.parse(localStorage.getItem('"' + categoria + '"'))
+  }
+  // setColaboradorResponsavel(categoria){
+  // this.colaboradorResponsavel = JSON.parse(localStorage.getItem('colaborador'+'"'+ categoria + '"'))
+  //  this.colaboradorResponsavel = JSON.parse(localStorage.getItem('cadastroVoluntario'))
+  //  console.log(this.colaboradorResponsavel);
+  //  }
   slices = 12;
   loadData(event) {
 
     setTimeout(() => {
 
-        this.slices =  20;
-        event.target.complete();
-        this.slices = 50;
-        if (event.target.complete) {
-          event.target.disabled = true; }
+      this.slices = 20;
+      event.target.complete();
+      this.slices = 50;
+      if (event.target.complete) {
+        event.target.disabled = true;
+      }
 
     }, 1500);
 
@@ -123,10 +155,10 @@ export class Folder2Page implements OnInit {
     return await modal.present();
   }
 
-  removeUser(item){
-      const index = this.alunos.indexOf(item);
+  removeUser(item) {
+    const index = this.alunos.indexOf(item);
 
-      if (index > -1){
+    if (index > -1) {
       this.alunos.splice(index, 1);
 
 
@@ -135,69 +167,48 @@ export class Folder2Page implements OnInit {
 
 
   }
-   filterItems(searchTerm) {
+  BuscarAlunos(searchTerm) {
 
-      return this.alunos.filter(item => {
-      return item.first_name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 ||
-      item.last_name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+    return this.alunos.filter(item => {
+      return item.nome.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
     });
   }
-  ionViewDidEnter(){
-   // this.setListChamada();
+  ionViewDidEnter() {
+    // this.setListChamada();
   }
 
-  ngOnInit() {
-    // tslint:disable-next-line: deprecation
-    //  this.loadData(event);Yes
-   //  this.setFilteredItems();
-    this.menu.enable(true, 'main-menu');
-    this.alunos = JSON.parse(localStorage.getItem('cadastroAluno'));
-    this.setChamada();
-    console.log(this.alunos);
-  }
-  setFilteredItems() {
-
-    this.alunos = this.filterItems(this.searchTerm);
-    if (this.searchTerm === ''){
-      this.alunos = this.fullList;
-    }
-  }
-
-
-
-
-
-  async presentAlert(item) {
+ 
+  async ConfirmarDelete(item) {
 
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Confirmation',
       message: 'Do you realy want to delete this user?',
       buttons: [
-    {
-      text: 'Yes',
-      cssClass: 'secondary',
-      handler: () => {
-        this.removeUser(item);
-        console.log('Confirm Cancel');
-        this.modalController.dismiss({
-          dismissed: true
-        });
+        {
+          text: 'Yes',
+          cssClass: 'secondary',
+          handler: () => {
+            this.removeUser(item);
+            console.log('Confirm Cancel');
+            this.modalController.dismiss({
+              dismissed: true
+            });
 
-      }
-    }, {
-      text: 'No',
-      handler: () => {
+          }
+        }, {
+          text: 'No',
+          handler: () => {
 
-       console.log('Confirm Ok');
-      }
-    }
+            console.log('Confirm Ok');
+          }
+        }
 
-    ]
+      ]
 
-  });
+    });
     await alert.present();
 
 
-    }
   }
+}

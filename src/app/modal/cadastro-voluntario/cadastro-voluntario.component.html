@@ -1,140 +1,387 @@
 <ion-content>
+
   <ion-grid>
-    <ion-row style='width: 150%;display: contents;'>
-     <ion-col size-md="6" offset-md="3">
 
-         <ion-card>
-          <div style="display: flex; justify-content: center;">
+    <ion-card>
 
-            <ion-toolbar color="secondary">  <ion-title>Cadastro do colaborador  </ion-title> </ion-toolbar>
-        </div>
+      <div style="display: flex; justify-content: center;">
 
-           <ion-card-content>
-            <form [formGroup]="form">
-              <ion-list lines="full">
-          
-          
-               <ion-item lines="none">
-                 <ion-select formControlName="categoria" placeholder="Categoria">
-                     <ion-select-option name="colaborador" value="colaborador"> Colaborador
 
-                     </ion-select-option>
-                     <ion-select-option  name="voluntario" value="voluntario"> Voluntário </ion-select-option>
-                 </ion-select>
-               </ion-item>
+        <ion-toolbar color="secondary">
+          <ion-title>Cadastro do colaborador </ion-title>
+        </ion-toolbar>
+
+      </div>
+
+
+      <ion-card-content>
+
+        <form [formGroup]="form">
+
+          <ion-list lines="full">
+
+            <ion-row>
+
+              <ion-col>
+
+                <ion-item lines="none">
+
+                  <ion-label position="stacked">
+
+                    <strong> Tipo de Cadastro </strong>
+
+                    <ion-text style="margin-left: 3px" color="danger">*</ion-text>
+
+                  </ion-label>
+
+                  <ion-select formControlName="categoria" placeholder="Categoria">
+
+                    <ion-select-option name="colaborador" value="colaborador"> Colaborador
+
+
+                    </ion-select-option>
+
+                    <ion-select-option name="voluntario" value="voluntario"> Voluntário </ion-select-option>
+
+                  </ion-select>
+
+                </ion-item>
+
+              </ion-col>
+
+            </ion-row>
+
+            <ion-row>
+
+              <ion-col>
+
                 <ion-item class="mt-2">
-                  <ion-label position="stacked">Nome <ion-text color="danger">*</ion-text>
+
+                  <ion-label position="stacked">
+
+                    <strong> Nome</strong>
+
+                    <ion-text style="margin-left: 3px" color="danger">*</ion-text>
+
                   </ion-label>
+
                   <ion-input formControlName="nome" type="text"></ion-input>
+
                 </ion-item>
+
+              </ion-col>
+
+              <ion-col>
+
                 <ion-item>
-                  <ion-label position="stacked">E-mail / Usuário <ion-text color="danger">*</ion-text>
+
+                  <ion-label position="stacked">
+
+                    <strong> Email / Usuário</strong>
+
+                    <ion-text style="margin-left: 3px" color="danger">*</ion-text>
+
                   </ion-label>
+
                   <ion-input formControlName="email" type="email" required></ion-input>
+
                 </ion-item>
+
+              </ion-col>
+
+            </ion-row>
+
+            <ion-row>
+
+              <ion-col>
+
                 <ion-item>
-                  <ion-label position="stacked">Telefone<ion-text color="danger">*</ion-text>
+
+                  <ion-label position="stacked">
+
+                    <strong> CPF</strong>
+
+                    <ion-text style="margin-left: 3px" color="danger">*</ion-text>
+
                   </ion-label>
-                  <ion-input placeholder="DDD + Telefone, sem caracteres especiais" formControlName="fone" type="number" required>
-                  </ion-input>
-                  <div class="txtErros" *ngIf="forms.fone?.errors">
-                    <ion-text *ngIf="forms.fone?.errors.celInvalido" color="danger">
-                      É necessario um telefone com whatsApp válido.
-                    </ion-text>
-                  </div>
-                </ion-item>
-                <ion-item>
-                  <ion-label position="stacked">CPF<b></b>
-                    <ion-text color="danger">*</ion-text>
-                  </ion-label>
+
                   <ion-input placeholder="Sem caracteres especiais" formControlName="cpf" type="text"
                     [ngClass]="{ 'is-invalid': forms.cpf?.errors }"></ion-input>
+
                   <div class="txtErros" *ngIf="forms.cpf?.errors">
+
                     <ion-text *ngIf="forms.cpf?.errors.cpfInvalido" color="danger">
+
                       Preencha um CPF válido.
+
                     </ion-text>
+
                   </div>
+
                 </ion-item>
+
+              </ion-col>
+
+              <ion-col>
+
                 <ion-item>
-                  <ion-label position="stacked">Senha<b></b>
-                    <ion-text color="danger">*</ion-text>
+
+                  <ion-label position="stacked">
+
+                    <strong> Telefone</strong>
+
+                    <ion-text style="margin-left: 3px" color="danger">*</ion-text>
+
                   </ion-label>
-                  <ion-input formControlName="senha" type="password" [ngClass]="{ 'is-invalid': forms.senha?.errors }"></ion-input>
-                  <div class="txtErros" *ngIf="forms.senha?.errors">
-                    <ion-text *ngIf="forms.senha?.errors.minlength" color="danger">
-                      Senha precisa ter no mínimo 6 caracteres.
+
+                  <ion-input placeholder="DDD + Telefone, sem caracteres especiais" formControlName="fone" type="number"
+                    required>
+
+                  </ion-input>
+
+                  <div class="txtErros" *ngIf="forms.fone?.errors">
+
+                    <ion-text *ngIf="forms.fone?.errors.celInvalido" color="danger">
+
+                      É necessario um telefone com whatsApp válido.
+
                     </ion-text>
+
                   </div>
+
                 </ion-item>
-                <ion-item class="ion-margin-bottom">
-                  <ion-label position="stacked">Confirmar Senha<ion-text color="danger">*</ion-text>
+
+              </ion-col>
+
+            </ion-row>
+
+            <ion-row>
+
+              <ion-col>
+
+                <ion-item>
+
+                  <ion-label position="stacked">
+
+                    <strong> Senha</strong>
+
+                    <ion-text style="margin-left: 3px" color="danger">*</ion-text>
+
                   </ion-label>
+
+                  <ion-input formControlName="senha" type="password" [ngClass]="{ 'is-invalid': forms.senha?.errors }">
+                  </ion-input>
+
+                  <div class="txtErros" *ngIf="forms.senha?.errors">
+
+                    <ion-text *ngIf="forms.senha?.errors.minlength" color="danger">
+
+                      Senha precisa ter no mínimo 6 caracteres.
+
+                    </ion-text>
+
+                  </div>
+
+                </ion-item>
+
+              </ion-col>
+
+              <ion-col>
+
+                <ion-item class="ion-margin-bottom">
+
+                  <ion-label position="stacked">
+
+                    <strong> Confirmar Senha</strong>
+
+                    <ion-text style="margin-left: 3px" color="danger">*</ion-text>
+
+                  </ion-label>
+
                   <ion-input formControlName="confirmarSenha" type="password"
                     [ngClass]="{ 'is-invalid': forms.confirmarSenha?.errors }"></ion-input>
+
                   <div class="txtErros" *ngIf="forms.confirmarSenha?.errors">
+
                     <ion-text *ngIf="forms.confirmarSenha?.errors.minlength" color="danger">
+
                       Senha precisa ter no mínimo 6 caracteres.
+
                     </ion-text>
+
                     <ion-text *ngIf="forms.confirmarSenha?.errors.mustMatch" color="danger">
+
                       As senhas não conferem.
+
                     </ion-text>
+
                   </div>
+
                 </ion-item>
-          
+
+              </ion-col>
+
+            </ion-row>
+
+            <ion-row>
+
+              <ion-col>
+
                 <ion-item class="ion-margin-bottom">
-                  <ion-label position="stacked">Cep<ion-text color="danger">*</ion-text>
+
+                  <ion-label position="stacked">
+
+                    <strong> Data de Nascimento</strong>
+
+                    <ion-text style="margin-left: 3px" color="danger">*</ion-text>
+
                   </ion-label>
+
+                  <ion-datetime displayFormat="DD/MM/YY" formControlName="date"></ion-datetime>
+
+                </ion-item>
+
+              </ion-col>
+
+            </ion-row>
+
+            <ion-row>
+
+              <ion-col>
+
+                <ion-item class="ion-margin-bottom">
+
+                  <ion-label position="stacked">
+
+                    <strong> Cep</strong>
+
+                    <ion-text style="margin-left: 3px" color="danger">*</ion-text>
+
+                  </ion-label>
+
                   <ion-input type="text" (ionBlur)="getCep()" formControlName="cep"></ion-input>
+
                 </ion-item>
+
+              </ion-col>
+
+              <ion-col>
+
                 <ion-item class="ion-margin-bottom">
-                  <ion-label position="stacked">Rua <ion-text color="danger">*</ion-text>
+
+                  <ion-label position="stacked">
+
+                    <strong> Rua</strong>
+
+                    <ion-text style="margin-left: 3px" color="danger">*</ion-text>
+
                   </ion-label>
+
                   <ion-input type="text" formControlName="rua"></ion-input>
+
                 </ion-item>
+
+              </ion-col>
+
+            </ion-row>
+
+            <ion-row>
+
+              <ion-col>
+
                 <ion-item class="ion-margin-bottom">
-                  <ion-label position="stacked">Numero<ion-text color="danger">*</ion-text>
+
+                  <ion-label position="stacked">
+
+                    <strong> Numero </strong>
+
+                    <ion-text style="margin-left: 3px" color="danger">*</ion-text>
+
                   </ion-label>
+
                   <ion-input type="text" formControlName="numero"></ion-input>
+
                 </ion-item>
+
+              </ion-col>
+
+              <ion-col>
+
                 <ion-item class="ion-margin-bottom">
-                  <ion-label position="stacked">Bairro<ion-text color="danger">*</ion-text>
+
+                  <ion-label position="stacked">
+
+                    <strong> Bairro</strong>
+
+                    <ion-text style="margin-left: 3px" color="danger">*</ion-text>
+
                   </ion-label>
+
                   <ion-input type="text" formControlName="bairro"></ion-input>
+
                 </ion-item>
+
+              </ion-col>
+
+              <ion-col>
+
                 <ion-item class="ion-margin-bottom">
-                  <ion-label position="stacked">Cidade<ion-text color="danger">*</ion-text>
+
+                  <ion-label position="stacked">
+
+                    <strong> Cidade</strong>
+
+                    <ion-text style="margin-left: 3px" color="danger">*</ion-text>
+
                   </ion-label>
+
                   <ion-input type="text" formControlName="cidade"></ion-input>
+
                 </ion-item>
+
+              </ion-col>
+
+              <ion-col>
+
                 <ion-item class="ion-margin-bottom">
-                  <ion-label position="stacked">UF<ion-text color="danger">*</ion-text>
+
+                  <ion-label position="stacked">
+
+                    <strong> Estado</strong>
+
+                    <ion-text style="margin-left: 3px" color="danger">*</ion-text>
+
                   </ion-label>
+
                   <ion-input type="text" formControlName="uf"></ion-input>
+
                 </ion-item>
-                <ion-item class="ion-margin-bottom">
-                  <ion-label position="stacked">Data de Nascimento<ion-text color="danger">*</ion-text>
-                  </ion-label>
-                  <ion-datetime displayFormat="DD MM YY" formControlName="date"></ion-datetime>
-                </ion-item>
-          
-          
-                <ion-button style="margin-top: 6px;" expand="block" color="secondary" (click)="submit()" [disabled]="form.invalid">Enviar dados</ion-button>
-          
-                <div class="ion-text-center fs-1 mt-2">
-                  <ion-label color="medium">Após o envio do formulário será realizada uma validação manual do seu cadastro
-                  </ion-label>
-                </div>
-                
-          
-          
-              </ion-list>
-          
-              <!-- {{frmMain.value | json}} -->
-          
-            </form>
-       </ion-card-content>
-       </ion-card>
-     </ion-col>
-    </ion-row>
- </ion-grid>
+
+              </ion-col>
+
+            </ion-row>
+
+            <ion-button style="margin-top: 6px;" expand="block" color="secondary" (click)="submit()"
+              [disabled]="form.invalid">Enviar dados</ion-button>
+
+            <div class="ion-text-center fs-1 mt-2">
+
+              <ion-label color="medium">Após o envio do formulário será realizada uma validação manual do seu cadastro
+
+              </ion-label>
+
+            </div>
+
+          </ion-list>
+
+          <!-- {{frmMain.value | json}} -->
+
+        </form>
+
+      </ion-card-content>
+
+    </ion-card>
+
+  </ion-grid>
+
 </ion-content>
