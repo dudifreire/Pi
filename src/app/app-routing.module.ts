@@ -33,6 +33,10 @@ const routes: Routes = [
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
+  {
+    path: 'list-chamada',
+    loadChildren: () => import('./modal/list-chamada/list-chamada.module').then( m => m.ListChamadaPageModule)
+  },
 
 ];
 

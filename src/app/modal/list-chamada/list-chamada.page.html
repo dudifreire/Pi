@@ -1,0 +1,29 @@
+<ion-header>
+  <div style="text-align: center;">
+    <ion-toolbar color='secondary'>
+      <ion-title>Listas das Chamadas</ion-title>
+    </ion-toolbar>
+  </div>
+</ion-header>
+
+<ion-content>
+<ion-grid> 
+  <ion-list>
+    <ion-row> 
+      <ion-col size="6" *ngFor="let chamada of listChamadas"> 
+    <ion-radio-group name="radioInstalacoes">
+      <ion-item >
+        <ion-label>{{chamada.data}}</ion-label>
+        <ion-radio slot="start" name={{chamada.data}} [value]="chamada" (click)="selectChamada(chamada)"></ion-radio>
+      </ion-item>
+      
+
+    </ion-radio-group>
+  </ion-col>
+ 
+  </ion-row>
+  <ion-button color="secondary" style="bottom: 0;" (click)="dismiss()" expand="block">Selecionar </ion-button>
+  <ion-button color="secondary" style="bottom: 0;" (click)="cancel()" expand="block">Cancelar </ion-button>
+  </ion-list>
+</ion-grid>
+</ion-content>

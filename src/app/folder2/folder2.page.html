@@ -1,3 +1,12 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Chamadas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content>
   <!--  <ion-button color="secondary" (click)="setChamada()">Fazer chamada
 
@@ -16,7 +25,7 @@
 
       <form [formGroup]="chamada">
         <!--  #C (ionChange)="setColaboradorResponsavel(C.value)" -->
-        <ion-list>
+        <ion-list style="background: rgb(1, 39, 0);">
           <ion-row>
 
             <ion-col>
@@ -79,34 +88,23 @@
         </ion-searchbar>
       </ion-toolbar>
 
-      <ion-list>
-        <ion-grid>
+      <ion-list style="background: rgb(1, 39, 0);">
+        <ion-grid >
           
 
-            <ion-row>
-              <ion-col>
-                <ion-item  lines="none" style="border-bottom: 3px solid darkgreen;"> 
-                <ion-label slot="end" > <strong> Alunos </strong> </ion-label>
-              </ion-item>
-              </ion-col>
-              <ion-col >
-                <ion-item lines="none" style="border-bottom: 3px solid darkgreen;" > 
-                <ion-label  slot="end"> <strong> Presente </strong> </ion-label>
-              </ion-item>
-              </ion-col>
-            </ion-row>
-
+        
        
         
 
-          <ion-row>
-            <ion-col>
-              <ion-item  *ngFor="let aluno of alunos | slice:0:slices;let i = index" >
+          <ion-row >
+            <ion-col col-2 size="6" *ngFor="let aluno of alunos | slice:0:slices;let i = index" >
+              <ion-item  >
                 <ion-icon color="secondary" slot="start" name="person-circle-outline"></ion-icon>
-                <ion-label style="text-align: center;margin-right: 38%" (click)="showModal(aluno)" >{{aluno.nome}}
+                <ion-label  (click)="showModal(aluno)" >{{aluno.nome}}
                 </ion-label>
-                <ion-checkbox style="margin-right: 12%;" #c [checked]="uncheckAll" (ionChange)="setPresente(c.checked, i);$event.stopPropagation();" color="success"
-                  slot="end"> </ion-checkbox>
+                <ion-text slot="end" color="secondary">Presente:</ion-text>
+                <ion-checkbox  #c [checked]="uncheckAll" (ionChange)="setPresente(c.checked, i);$event.stopPropagation();" color="success"
+                  slot="end">  </ion-checkbox>
                 <ion-button slot="end" size="small" color="danger"
                   (click)="ConfirmarDelete(aluno);$event.stopPropagation();">
                   <ion-icon name="trash-outline"></ion-icon>
@@ -114,9 +112,7 @@
               </ion-item>
             </ion-col>
           </ion-row>
-
-
-
+       
         </ion-grid>
       </ion-list>
       <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">

@@ -1,11 +1,7 @@
 .my-custom-class .alert-wrapper {
   background: #e5e5e5;
 }
-.cardObs{
-  width: 100%;
-  border: 3px solid darkgreen;
- 
-}
+
 ion-content {
   --background: none;
   background-image: url("/assets/criançafutebol.png");
@@ -13,7 +9,21 @@ ion-content {
   background-size: cover;
 
 }
+ion-col {
+  --background:  rgb(1, 34, 0); 
+  border: 2px solid rgb(16, 129, 7); 
+}
 ion-card{
-  border-radius: 15px;
-  border: 3px solid black;
+  --background:  rgb(1, 34, 0); 
+    border-radius: 15px;
+    border: 3px solid black;
+}
+ion-item{
+  --background: linear-gradient(to right, #D4D3DD, #EFEFBB); 
+}
+.cardObs{
+  --background: linear-gradient(to right, #D4D3DD, #EFEFBB); 
+  width: 100%;
+  border: 3px solid darkgreen;
+ 
 }
