@@ -1,3 +1,4 @@
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HelperService } from './../services/helper.service';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { MenuController, ModalController } from '@ionic/angular';
@@ -20,6 +21,9 @@ styleUrls: ['./folder3.page.scss'],
 export class Folder3Page implements OnInit {
 
   listChamadas: any = [];
+  showChamadaList = false;
+  relatorio : FormGroup;
+  orderList = [];
 
 
   constructor(
@@ -27,12 +31,14 @@ export class Folder3Page implements OnInit {
     private menuController: MenuController,
     private inAppBrowser: InAppBrowser,
     private modalCtrl: ModalController,
-    private helper: HelperService
+    private helper: HelperService,
+    private fb: FormBuilder
 
   ) { }
 
   ngOnInit() {
     this.setListChamada();
+    this.setRelatorioForm();
   }
   listarChamada(chamadaSelecionada){
     console.log(chamadaSelecionada);
@@ -63,7 +69,30 @@ export class Folder3Page implements OnInit {
   async getDadosModalChamada(modal: HTMLIonModalElement, listChamadas) {
     const { data } = await modal.onWillDismiss();
     console.log(data);
+    this.showChamadaList = true;
+
+    this.relatorio.patchValue({
+      aluno: data.ChamadaSelecionada.aluno,
+      data: data.ChamadaSelecionada.data,
+      categoria: data.ChamadaSelecionada.categoria,
+      obs: data.ChamadaSelecionada.obs,
+      professor: data.ChamadaSelecionada.professor
+    });
+    this.orderList = data.ChamadaSelecionada.aluno;
+    console.log(this.orderList);
   }
+
+  setRelatorioForm(){
+    this.relatorio = this.fb.group({
+      aluno: [''],
+      data: ['', [Validators.required]],
+      professor: ['', [Validators.required]],
+      categoria: ['', [Validators.required]],
+      obs: ['', [Validators.required]],
+    });
+  }
+
+
 
   openChamadaList(tipo) {
     console.log(tipo);

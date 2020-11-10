@@ -24,11 +24,16 @@ body {
     background:  rgb(1, 34, 0); 
 }
 ion-content{ 
+    
     --background: none;
+    border: 3px solid rgb(1, 34, 0);
     background-image: url("/assets/criançafutebol.png");
     background-repeat: no-repeat;
     background-size: cover;
 }
+ion-list {
+    background: transparent;
+  }
   
 ion-col {
     border: 2px solid rgb(16, 129, 7); 

@@ -9,6 +9,7 @@ ion-content{
 }
 ion-content{ 
     --background: none;
+    border: 3px solid rgb(1, 34, 0);
     background-image: url("/assets/bitmap.png");
     background-repeat: no-repeat;
     background-size: cover;
