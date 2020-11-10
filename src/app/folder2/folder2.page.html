@@ -97,7 +97,7 @@
         
 
           <ion-row >
-            <ion-col col-2 size="6" *ngFor="let aluno of alunos | slice:0:slices;let i = index" >
+            <ion-col col-2 size="6" *ngFor="let aluno of alunos;let i = index" >
               <ion-item  >
                 <ion-icon color="secondary" slot="start" name="person-circle-outline"></ion-icon>
                 <ion-label  (click)="showModal(aluno)" >{{aluno.nome}}
@@ -115,10 +115,6 @@
        
         </ion-grid>
       </ion-list>
-      <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
-        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more users...">
-        </ion-infinite-scroll-content>
-      </ion-infinite-scroll>
       <ion-button color="secondary" [disabled]="chamada.invalid"  (click)="submitChamada(alunos)" expand="block"> FAZER CHAMADA</ion-button>
     </ion-card>
 

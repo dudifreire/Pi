@@ -14,7 +14,7 @@ export class RoutingGuardsGuard implements CanActivate {
     public toastController: ToastController,
 
    ) { }
- 
+
 
   async canActivate(
 
@@ -23,7 +23,7 @@ export class RoutingGuardsGuard implements CanActivate {
       const token = JSON.parse(localStorage.getItem('user'));
       this.storage.get('user').then((val) => {
         if (val === 'true' ){
-        localStorage.setItem('user', 'true');     
+        localStorage.setItem('user', 'true');
 
         }
       });

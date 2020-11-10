@@ -7,3 +7,16 @@
   }
 }
   }
+  ion-col {
+    border: 2px solid rgb(16, 129, 7);
+  }
+  ion-item {
+    --background: linear-gradient(to right, #d4d3dd, #efefbb);
+  }
+  ion-card {
+    border-radius: 15px;
+    border: 3px solid black;
+  }
+  ion-list {
+    background: transparent;
+  }

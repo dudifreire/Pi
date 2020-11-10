@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FunctionsService } from 'src/app/services/functions.service';
 import { HttpClient } from '@angular/common/http';
-import { mustMatch, validarCelular, validarCpf } from '../../core/Functions';
+import { mustMatch, validarCelular, validarCpf } from '../../core/functions';
 import { Router } from '@angular/router';
 
 @Component({
@@ -13,8 +13,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./cadastro-voluntario.component.scss'],
 })
 export class CadastroVoluntarioComponent implements OnInit {
-  public form: FormGroup
- 
+  public form: FormGroup;
+
   constructor(
     private functionsService: FunctionsService,
     private fb: FormBuilder,
@@ -49,7 +49,7 @@ export class CadastroVoluntarioComponent implements OnInit {
 
         ],
       }
-    )
+    );
 
   }
   get forms() {
@@ -71,7 +71,7 @@ export class CadastroVoluntarioComponent implements OnInit {
             cidade: result.localidade,
             uf: result.uf
 
-          })
+          });
         }
       });
 
@@ -80,14 +80,14 @@ export class CadastroVoluntarioComponent implements OnInit {
     this.setForm();
   }
   submit() {
-    localStorage.setItem('cadastroVoluntario', JSON.stringify(this.form.value))
+    localStorage.setItem('cadastroVoluntario', JSON.stringify(this.form.value));
     this.form.reset();
     this.router.navigateByUrl('/login');
     this.helperS.toast(
       'Dados enviados com sucesso! Será realizada uma validação manual do seu cadastro...'
     );
     this.modalCtlr.dismiss({
-      'dismissed': true
+      dismissed: true
     });
   }
 

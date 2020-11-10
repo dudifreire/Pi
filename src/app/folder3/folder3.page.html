@@ -26,19 +26,22 @@
 <ion-row>
   <ion-col>
     <ion-item >
-    <ion-label position="stacked"><strong> Selecione o dia desejado</strong>
+    <ion-label position="stacked"><strong> Selecione o tipo de ordenação da Chamadas</strong>
       <ion-text style="margin-left: 3px;" color="danger">*</ion-text>
     </ion-label>
-    <ion-select #c  (ionChange)="listarChamada(c.value)"  placeholder="Chamadas por data">
-      <ion-select-option  *ngFor="let chamada of listChamadas" value={{chamada}} >
-        {{chamada.data}}
-      </ion-select-option>
+    <ion-select #c   placeholder="Tipo de ordenação da Chamadas">
+      <ion-select-option name="data" value="data">Por Data
+     </ion-select-option>
+     <ion-select-option name="aluno" value="aluno">Por Aluno
+    </ion-select-option>
+    <ion-select-option name="colaborador" value="colaborador">Por Colaborador
+    </ion-select-option>
     </ion-select>
   </ion-item>
   </ion-col>
   <ion-col>
     <ion-row>
-      <ion-col ><ion-button expand="block" color="secondary" (click)="openChamadaList()"  > Listar Chamadas </ion-button></ion-col>
+      <ion-col ><ion-button expand="block" color="secondary" (click)="openChamadaList(c.value)"  > Listar Chamadas </ion-button></ion-col>
     </ion-row>
   </ion-col>
 </ion-row>

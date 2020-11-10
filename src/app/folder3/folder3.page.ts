@@ -11,16 +11,16 @@ const { Filesystem } = Plugins;
 
 
 
-@Component({ 
+@Component({
 selector: 'app-folder3',
 templateUrl: './folder3.page.html',
-styleUrls: ['./folder3.page.scss'], 
+styleUrls: ['./folder3.page.scss'],
 })
 
 export class Folder3Page implements OnInit {
 
   listChamadas: any = [];
-  
+
 
   constructor(
     private http: HttpClient,
@@ -28,15 +28,15 @@ export class Folder3Page implements OnInit {
     private inAppBrowser: InAppBrowser,
     private modalCtrl: ModalController,
     private helper: HelperService
-    
+
   ) { }
 
   ngOnInit() {
-    this.setListChamada()
+    this.setListChamada();
   }
   listarChamada(chamadaSelecionada){
     console.log(chamadaSelecionada);
-   
+
   }
   setListChamada() {
     this.listChamadas = JSON.parse(localStorage.getItem('chamadaList'));
@@ -48,7 +48,7 @@ export class Folder3Page implements OnInit {
     const modal = await this.modalCtrl.create({
       component: ListChamadaPage,
       backdropDismiss: false,
-      cssClass: 'modal-listChamada',
+      cssClass: 'chamadaModal',
       componentProps: {
         listChamadas,
 
@@ -62,10 +62,11 @@ export class Folder3Page implements OnInit {
 
   async getDadosModalChamada(modal: HTMLIonModalElement, listChamadas) {
     const { data } = await modal.onWillDismiss();
-    console.log(data)
+    console.log(data);
   }
 
-  openChamadaList() {
+  openChamadaList(tipo) {
+    console.log(tipo);
     this.listChamadas = JSON.parse(localStorage.getItem('chamadaList'));
    // console.log(this.historicos);
     if (this.listChamadas) {
@@ -75,12 +76,12 @@ export class Folder3Page implements OnInit {
     }
   }
 
-  
-
-  
 
 
-    
+
+
+
+
 
 
 
@@ -97,8 +98,8 @@ export class Folder3Page implements OnInit {
 
 
 
- 
-  
+
+
   async fileWrite(pdf , index) {
     try {
       const result = await Filesystem.writeFile({
@@ -106,27 +107,27 @@ export class Folder3Page implements OnInit {
         data: pdf,
         directory: FilesystemDirectory.Documents,
         encoding: FilesystemEncoding.UTF8
-      })
+      });
       console.log('Wrote file', result);
-    } catch(e) {
+    } catch (e) {
       console.error('Unable to write file', e);
     }
   }
-  
+
   async readFilePath(blob) {
     // Here's an example of reading a file with a full file path. Use this to
     // read binary data (base64 encoded) from plugins that return File URIs, such as
     // the Camera.
     try {
       const path = 'Documento.docx';
-      let data = await Filesystem.readFile({
+      const data = await Filesystem.readFile({
         path,
         directory: FilesystemDirectory.Documents
       });
       console.log(data);
     }
     finally {
-      console.log("teste");
+      console.log('teste');
     }
   }
 

@@ -6,8 +6,6 @@ import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { MenuController } from '@ionic/angular';
-import { FormControl, FormGroup , Validators , FormBuilder} from '@angular/forms';
-import { FunctionsService } from './services/functions.service';
 
 @Component({
   selector: 'app-root',
@@ -33,12 +31,12 @@ export class AppComponent implements OnInit {
       icon: 'document'
     },
     {
-      title:'Sair',
-      url:'login',
-      icon:'log-out'
+      title: 'Sair',
+      url: 'login',
+      icon: 'log-out'
     },
-  ]; 
-  
+  ];
+
 
   constructor(
     private platform: Platform,
@@ -48,7 +46,7 @@ export class AppComponent implements OnInit {
     private storage: Storage,
     public toastController: ToastController,
     private menu: MenuController,
-    
+
   ) {
     this.initializeApp();
   }
@@ -65,7 +63,7 @@ export class AppComponent implements OnInit {
 
       }
 
-      
+
 
 
 initializeApp() {
@@ -74,9 +72,9 @@ initializeApp() {
       this.splashScreen.hide();
     });
   }
-  
+
 ngOnInit() {
-    
+
     const path = window.location.pathname.split('folder/')[1];
     if (path !== undefined) {
       this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());

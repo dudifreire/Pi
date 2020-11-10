@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { Storage } from '@ionic/storage';
 import { ToastController } from '@ionic/angular';
-import { mustMatch, validarCelular, validarCpf } from '../core/Functions';
+import { mustMatch, validarCelular, validarCpf } from '../core/functions';
 
 
 
@@ -25,10 +25,10 @@ export class FolderPage implements OnInit {
   public tipoAluno = false;
   public photo;
   public form: FormGroup;
-  public formCategoria: FormGroup
-  public colaboradores: any = [] 
-  public alunos: any = []
-  public CValue:String;
+  public formCategoria: FormGroup;
+  public colaboradores: any = [];
+  public alunos: any = [];
+  public CValue;
   constructor(
     private activatedRoute: ActivatedRoute,
     private menu: MenuController,
@@ -44,14 +44,15 @@ export class FolderPage implements OnInit {
         nome: [null, [Validators.required]],
         descricao: [null, [Validators.required]],
         voluntario: [null, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
-  
-      })
-  
+
+      });
+
     }
 
     setTipoForm(Cvalue) {
       console.log(Cvalue);
-      if(Cvalue == "aluno"){
+      // tslint:disable-next-line: triple-equals
+      if (Cvalue == 'aluno'){
         this.tipoAluno = true;
         this.tipoCategoria = false;
       }
@@ -60,32 +61,32 @@ export class FolderPage implements OnInit {
         this.tipoAluno = false;
       }
     }
-    
-    
+
+
     setForm() {
       this.form = this.fb.group({
-        categoria: [null,[ Validators.required]],
-        nome: [null,[ Validators.required]],
+        categoria: [null, [ Validators.required]],
+        nome: [null, [ Validators.required]],
         responsavel: [null, [Validators.required, Validators.minLength(5), Validators.maxLength(30)]],
         foneAluno: [null],
         foneResponsavel: [null, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
-        cep: [null,[ Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
-        rua: [null,[ Validators.required, Validators.minLength(4)]],
-        numero: [null,[ Validators.required, Validators.minLength(1)]],
+        cep: [null, [ Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
+        rua: [null, [ Validators.required, Validators.minLength(4)]],
+        numero: [null, [ Validators.required, Validators.minLength(1)]],
         bairro: [null, [Validators.required, Validators.minLength(3)]],
         cidade: [null, [Validators.required, Validators.minLength(3)]],
         uf: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(10)]],
-        date: [null,[ Validators.required]],
+        date: [null, [ Validators.required]],
         presente : false
       },
         {
           validators: [
             validarCelular('foneResponsavel')
-  
+
           ],
         }
-      )
-  
+      );
+
     }
     get forms() {
       return this.form.controls;
@@ -113,6 +114,14 @@ export class FolderPage implements OnInit {
 
 
   }
+  setAlunos(){
+    this.alunos = JSON.parse(localStorage.getItem('cadastroAluno'));
+    if (!this.alunos) {
+      this.alunos = [];
+
+    }
+
+  }
   getCep() {
 
     this.http.get('https://viacep.com.br/ws/' + this.form.value.cep + '/json/?callback=')
@@ -128,18 +137,20 @@ export class FolderPage implements OnInit {
             cidade: result.localidade,
             uf: result.uf
 
-          })
+          });
         }
       });
 
-  } 
+  }
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     this.menu.enable(true, 'main-menu');
     this.setForm();
-    this.setFormCategoria()
-    this.alunos = JSON.parse(localStorage.getItem('cadastroAluno'));
-    
+    this.setFormCategoria();
+    this.setAlunos();
+
+
+
   }
 
 }
