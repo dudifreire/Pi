@@ -9,6 +9,10 @@ import { HelperService } from 'src/app/services/helper.service';
 })
 export class ListChamadaPage implements OnInit {
   @Input() listChamadas: any[];
+  @Input() tipoList: string;
+  
+  setTipoList;
+
   ChamadaSelecionada;
   constructor(
     private modalCtrl: ModalController,
@@ -28,6 +32,7 @@ export class ListChamadaPage implements OnInit {
    // console.log(this.instalacaoSelecionada);
     this.modalCtrl.dismiss({
       dismissed: true,
+      tipoLista: this.setTipoList,
       ChamadaSelecionada: this.ChamadaSelecionada,
     });
   }
@@ -36,9 +41,23 @@ export class ListChamadaPage implements OnInit {
       dismissed: true,
     });
   }
+  setTipoLista(){
+    if(this.tipoList === "aluno"){
+      this.setTipoList = "aluno"
+    }
+    if(this.tipoList === "data"){
+      this.setTipoList = "data"
+    }
+    if(this.tipoList === "colaborador"){
+      this.setTipoList = "colaborador"
+    }
+
+  }
 
   ngOnInit() {
     console.log(this.listChamadas);
+    console.log(this.tipoList);
+    this. setTipoLista();
   }
 
 }
