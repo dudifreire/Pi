@@ -72,7 +72,12 @@ export class Folder2Page implements OnInit {
     }
   }
   setPresente(value, index: number) {
-    this.alunos[index].presente = value;
+    console.log(value);
+    if(value=true){
+      this.alunos[index].presente = 'Sim';
+    }
+    
+    
     console.log(this.alunos[index].presente);
 
   }

@@ -80,6 +80,7 @@ export class CadastroVoluntarioComponent implements OnInit {
     this.setForm();
   }
   submit() {
+    console.log(this.form.value);
     localStorage.setItem('cadastroVoluntario', JSON.stringify(this.form.value));
     this.form.reset();
     this.router.navigateByUrl('/login');
