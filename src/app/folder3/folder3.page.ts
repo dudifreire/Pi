@@ -26,7 +26,16 @@ export class Folder3Page implements OnInit {
   orderList = [];
   TipoList;
   alunosList = [];
-
+  totalFaltas = [];
+  totalPresencas = [];
+  FiltroAlunoObject = {
+    TotalDeFaltas:  null,
+    totalDeChamadas: null,
+    totalDePresencas: null
+    
+  }
+  todasAsPresenças = [];
+  
 
 
   constructor(
@@ -70,20 +79,41 @@ export class Folder3Page implements OnInit {
 
   }
   setFiltroAluno(aluno) {
-    var orderListAluno = this.listChamadas.map(v => ({ alunos: v.aluno, data: v.data }));
-    var todasAsPresenças = [];
+    
+    let orderListAluno = this.listChamadas.map(v => ({ alunos: v.aluno, data: v.data }));
+    let todasAsPresenças = [];
+    let totalChamadasAtivas;
+    let totalFaltas = [];
+    let totalPresencas = []
     for (let i of orderListAluno) {
       for (let j of i.alunos) {
         if (j.Aluno === aluno) {
           j.data = i.data
           todasAsPresenças.push(j);
         }
-
-
+        if (j.Aluno === aluno && j.presente === "Sim") {
+          console.log(j);
+          totalPresencas.push(j)
+        }
+        if (j.Aluno === aluno && j.presente === "Não" || j.Aluno === aluno && j.presente === false ||
+          j.Aluno === aluno && j.presente === null) {
+          console.log(j);
+          totalFaltas.push(j)
+        }
       }
-
     }
-    console.log(todasAsPresenças);
+    totalChamadasAtivas = todasAsPresenças.length;
+
+    this.totalFaltas = totalFaltas;
+    this.todasAsPresenças = todasAsPresenças;
+    this.totalPresencas = totalPresencas;
+    this.FiltroAlunoObject = {
+      TotalDeFaltas:  totalFaltas.length,
+      totalDeChamadas: totalChamadasAtivas,
+      totalDePresencas: totalPresencas.length
+      
+    }
+    
 
   }
 
@@ -124,7 +154,7 @@ export class Folder3Page implements OnInit {
 
     }
 
-    if (data.tipoLista="aluno"){
+    if (data.tipoLista = "aluno") {
       this.setFiltroAluno(data.ChamadaSelecionada);
     }
 
