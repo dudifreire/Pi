@@ -23,7 +23,7 @@ export class ListChamadaPage implements OnInit {
     console.log(this.ChamadaSelecionada);
   
   }
-  dismiss() {
+  dismiss(aluno?) {
     if (!this.ChamadaSelecionada) {
       this.helperS.toast('Selecione uma Chamada.', 'danger');
       return;
@@ -34,6 +34,7 @@ export class ListChamadaPage implements OnInit {
       dismissed: true,
       tipoLista: this.setTipoList,
       ChamadaSelecionada: this.ChamadaSelecionada,
+      aluno: this.listChamadas
     });
   }
   cancel(){

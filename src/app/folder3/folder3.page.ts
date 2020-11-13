@@ -1,3 +1,4 @@
+import { ModalComponent } from './../modal/profile-modal/modal.component';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HelperService } from './../services/helper.service';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
@@ -22,9 +23,11 @@ export class Folder3Page implements OnInit {
 
   listChamadas: any = [];
   showChamadaList = false;
+  showChamadaAlunoList = false;
   relatorio: FormGroup;
   orderList = [];
   TipoList;
+  alunoModalData = [];
   alunosList = [];
   totalFaltas = [];
   totalPresencas = [];
@@ -35,7 +38,7 @@ export class Folder3Page implements OnInit {
     
   }
   todasAsPresenças = [];
-  
+  public nomeAluno = '';
 
 
   constructor(
@@ -44,7 +47,8 @@ export class Folder3Page implements OnInit {
     private inAppBrowser: InAppBrowser,
     private modalCtrl: ModalController,
     private helper: HelperService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private modalController: ModalController
 
   ) { }
 
@@ -92,13 +96,13 @@ export class Folder3Page implements OnInit {
           todasAsPresenças.push(j);
         }
         if (j.Aluno === aluno && j.presente === "Sim") {
-          console.log(j);
+
           totalPresencas.push(j)
         }
         if (j.Aluno === aluno && j.presente === "Não" || j.Aluno === aluno && j.presente === false ||
           j.Aluno === aluno && j.presente === null) {
-          console.log(j);
           totalFaltas.push(j)
+
         }
       }
     }
@@ -110,9 +114,14 @@ export class Folder3Page implements OnInit {
     this.FiltroAlunoObject = {
       TotalDeFaltas:  totalFaltas.length,
       totalDeChamadas: totalChamadasAtivas,
-      totalDePresencas: totalPresencas.length
+      totalDePresencas: totalPresencas.length,
+      
       
     }
+    console.log( this.totalFaltas);
+    console.log(this.todasAsPresenças);
+    console.log(this.totalPresencas);
+    console.log(this.FiltroAlunoObject);
     
 
   }
@@ -139,8 +148,10 @@ export class Folder3Page implements OnInit {
   async getDadosModalChamada(modal: HTMLIonModalElement, listChamadas) {
     const { data } = await modal.onWillDismiss();
     console.log(data);
+    console.log(data.tipoLista);
+    console.log(data.aluno)
+    
     if (data.tipoLista === "data") {
-      this.showChamadaList = true;
       this.relatorio.patchValue({
         aluno: data.ChamadaSelecionada.aluno,
         data: data.ChamadaSelecionada.data,
@@ -148,16 +159,40 @@ export class Folder3Page implements OnInit {
         obs: data.ChamadaSelecionada.obs,
         professor: data.ChamadaSelecionada.professor
       });
+      
       this.orderList = data.ChamadaSelecionada.aluno;
       console.log(this.orderList);
+      this.showChamadaList = true;
+      this.showChamadaAlunoList = false;
 
 
     }
 
-    if (data.tipoLista = "aluno") {
+    if (data.tipoLista === "aluno") {
+      
+
       this.setFiltroAluno(data.ChamadaSelecionada);
+      this.nomeAluno = data.ChamadaSelecionada;
+      this.showChamadaList = false;
+      this.showChamadaAlunoList = true;
+      for(let i of data.aluno){
+        if(i.nome === data.ChamadaSelecionada )
+             this.alunoModalData.push(i)
+      }
+      
     }
 
+  }
+  async ShowModalAluno() {
+    const modal = await this.modalController.create({
+      component: ModalComponent,
+      cssClass: 'modalAluno',
+      componentProps: {
+        aluno: this.alunoModalData,
+        paginaAtual: 'folder3'
+      },
+    });
+    return await modal.present();
   }
 
   setRelatorioForm() {

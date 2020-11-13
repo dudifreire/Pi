@@ -34,7 +34,7 @@
                 <ion-label style="font-size: 20px;" position="stacked"> <strong>Categoria do Aluno </strong>
                   <ion-text color="danger">*</ion-text>
                 </ion-label>  
-                <ion-select style="font-size: 12px;"  formControlName="Selecione Categoria" formControlName="categoria" name="Categoria"
+                <ion-select style="font-size: 12px;" #c (ionChange)="categoriaChange(c.value)" formControlName="Selecione Categoria" formControlName="categoria" name="Categoria"
                   placeholder="Categoria"> Categoria
                   <ion-select-option name="sub9" value="sub9"> sub 9 </ion-select-option>
                   <ion-select-option name="sub11" value="sub11"> sub 11 </ion-select-option>
@@ -61,9 +61,11 @@
             <ion-col>
               <ion-item>
                 <ion-label style="font-size: 20px;"  position="stacked"> <strong> Dia da Chamada </strong>
-                  <ion-text color="danger">*</ion-text>
                 </ion-label>
-                <ion-datetime  displayFormat="DD/MM/YY" formControlName="data"></ion-datetime>
+                <ion-label style="font-size: 20px;margin-bottom: 12px;" position="stacked">  
+                  {{data}}
+                </ion-label>
+                
               </ion-item>
             </ion-col>
 

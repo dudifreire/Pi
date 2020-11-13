@@ -5,12 +5,16 @@ import { IonInfiniteScroll } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 import { ModalComponent } from '../modal/profile-modal/modal.component';
 import { AlertController } from '@ionic/angular';
+import { format } from 'date-fns'
+
 import {
   FormControl,
   FormGroup,
   Validators,
   FormBuilder,
 } from '@angular/forms';
+
+
 
 @Component({
   selector: 'app-folder2',
@@ -30,34 +34,38 @@ export class Folder2Page implements OnInit {
   public chamada: FormGroup;
   public chamadaAtiva = false;
   public alunos: any = [];
-  public fullList = this.alunos;
+  public fullList : any = [];
   public colaboradorResponsavel: any = [];
   public chamadaList: any = [];
   public formAlunos;
+  public showAlunosList = false;
   public uncheckAll = false;
+  public data = format(new Date(), 'dd/MM/yyyy')
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
-  // setColaboradorResponsavel(categoria){
-  // this.colaboradorResponsavel = JSON.parse(localStorage.getItem('colaborador'+'"'+ categoria + '"'))
-  //  this.colaboradorResponsavel = JSON.parse(localStorage.getItem('cadastroVoluntario'))
-  //  console.log(this.colaboradorResponsavel);
-  //  }
-  slices = 12;
+   slices = 12;
 
   ngOnInit() {
-    // tslint:disable-next-line: deprecation
-    //  this.loadData(event);Yes
-    //  this.setFilteredItems();
+
     this.menu.enable(true, 'main-menu');
-    this.alunos = JSON.parse(localStorage.getItem('cadastroAluno'));
     this.setChamada();
     console.log(this.alunos);
     this.setListChamada();
+    this.setAlunos()
+  }
+  setAlunos(){
+    this.alunos = JSON.parse(localStorage.getItem('cadastroAluno'));
+    if(!this.alunos){
+      this.alunos = [];
+    }
+    else{
+      this.fullList = this.alunos
+    }
   }
 
   setChamadaForm() {
     this.chamada = this.fb.group({
       aluno: [null],
-      data: [null, [Validators.required]],
+      data: [format(new Date(), 'dd/MM/yyyy'), [Validators.required]],
       professor: [null, [Validators.required]],
       categoria: [null, [Validators.required]],
       obs: [null, [Validators.required]],
@@ -124,7 +132,18 @@ export class Folder2Page implements OnInit {
     this.helper.toast('Chamada realizada com sucesso!', 'success');
   }
   categoriaChange(categoria) {
-    this.alunos = JSON.parse(localStorage.getItem('"' + categoria + '"'));
+    this.alunos = this.fullList;
+    console.log(categoria)
+    console.log(this.alunos);
+    let alunosCategoriaFilter = [];
+    for(let i of this.alunos){
+      if(i.categoria === categoria){ 
+        alunosCategoriaFilter.push(i);
+      }
+    }
+    console.log(alunosCategoriaFilter);
+    this.alunos = alunosCategoriaFilter
+    this.showAlunosList = true;
   }
   loadData(event) {
     setTimeout(() => {

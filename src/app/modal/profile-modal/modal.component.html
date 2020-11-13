@@ -7,7 +7,8 @@
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
-  <ion-grid> 
+  <ion-grid>
+    <ng-container *ngIf="!this.paginaAtual">
 <ion-list>
   <ion-row> 
 
@@ -76,6 +77,80 @@
   
 
 </ion-list>
+</ng-container> 
+<ng-container *ngIf="this.paginaAtual">
+  <ion-list *ngFor="let aluno of aluno">
+    <ion-row> 
+  
+  
+  <ion-col> 
+  <ion-item>
+  
+    <ion-avatar>
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR9iqAvsQOvVIuizFytPQvkB4PYd-fbMQvRXw&usqp=CAU">
+    </ion-avatar>
+    <ion-label position = "floating">
+      Nome: {{aluno.nome}}
+  
+    </ion-label>
+  
+  <p></p>
+  </ion-item>
+  </ion-col>
+  <ion-col style="padding-top: 12px;"> 
+  <ion-item>
+    <ion-label >
+      Categoria:  {{aluno.categoria}}
+  
+    </ion-label>
+  
+  </ion-item>
+  <ion-item>
+    <ion-label >
+      Responsavel:  {{aluno.responsavel}}
+  
+    </ion-label>
+  
+  
+  </ion-item>
+  </ion-col>
+  </ion-row>
+  <ion-row> 
+    <ion-col size="12"> 
+  <ion-item>
+    <ion-label >
+      Telefone Responsavel:  {{aluno.foneResponsavel}}<p></p>
+      Telefone Aluno: {{aluno.foneAluno}}
+    </ion-label>
+  
+  </ion-item>
+  </ion-col>
+  <ion-col ion-col size="12"> 
+  <ion-item>
+    
+    
+    <ion-label >
+      Endereço:  {{aluno.rua}} {{aluno.numero}} <p></p>
+                  CEP: {{aluno.cep}}<p></p>{{aluno.cidade}} {{aluno.uf}}
+  
+    </ion-label>
+  
+  </ion-item>
+  </ion-col>
+  
+  
+  
+  </ion-row>
+  
+    
+    
+    
+  
+  </ion-list>
+
+
+
+</ng-container>
 
 
 

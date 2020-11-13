@@ -31,9 +31,6 @@
               <ion-select-option name="aluno" value="aluno"
                 >Por Aluno
               </ion-select-option>
-              <ion-select-option name="colaborador" value="colaborador"
-                >Por Colaborador
-              </ion-select-option>
             </ion-select>
           </ion-item>
         </ion-col>
@@ -104,25 +101,39 @@
         </ion-card>
       </form>
     </ng-container>
-  <!--   <ng-container>
+   <ng-container *ngIf="showChamadaAlunoList">
      
         <ion-card class="bgcolor">
           <ion-title>
-            <ion-label color="light"> </ion-label>
+            <ion-label color="light"> {{nomeAluno}} </ion-label>
           </ion-title>
           <ion-row>
             <ion-col size="6">
+
               <ion-list>
-                <ion-item *ngFor="let order of orderList">
+                <ion-item *ngFor="let order of totalPresencas">
                   <ion-label color="dark" position="stacked">
                     <ion-text color="dark">
-                      <strong> Aluno: </strong> {{order.Aluno}}
+                      <strong> Data: </strong> {{order.data}}
                     </ion-text>
                   </ion-label>
 
-                  <ion-label slot="end" position="stacked">
-                    <ion-text color="dark"
-                      ><strong> Estava Presente: </strong> {{order.presente}}
+                  <ion-label  slot="end" position="stacked">
+                    <ion-text color="success"
+                      ><strong> Estava Presente </strong> 
+                    </ion-text>
+                  </ion-label>
+                </ion-item>
+                <ion-item *ngFor="let order of totalFaltas">
+                  <ion-label color="dark" position="stacked">
+                    <ion-text color="dark">
+                      <strong> Data: </strong> {{order.data}}
+                    </ion-text>
+                  </ion-label>
+
+                  <ion-label  slot="end" position="stacked">
+                    <ion-text color="danger"
+                      ><strong> Faltou </strong> 
                     </ion-text>
                   </ion-label>
                 </ion-item>
@@ -131,25 +142,32 @@
             <ion-col size="6">
               <ion-item>
                 <ion-label color="dark" position="stacked">
-                  <strong> Professor Responsavel Pela Chamada </strong>
+                  <strong> Total de chamadas</strong>
                 </ion-label>
-                <ion-input color="dark" formControlName="professor">
-                </ion-input>
+                <ion-label color="dark"> {{FiltroAlunoObject.totalDeChamadas}}
+                </ion-label>
               </ion-item>
               <ion-item>
                 <ion-label color="dark" position="stacked">
-                  <strong> Categoria da Chamada </strong>
+                  <strong> Total de presenças</strong>
                 </ion-label>
-                <ion-input color="dark" formControlName="categoria">
-                </ion-input>
+                <ion-label color="dark"> {{FiltroAlunoObject.totalDePresencas}}
+                </ion-label>
               </ion-item>
 
               <ion-item>
                 <ion-label color="dark" position="stacked">
-                  <strong> Observação da Chamada </strong>
+                  <strong> Total de faltas </strong>
                 </ion-label>
-                <ion-input color="dark" formControlName="obs"> </ion-input>
+                <ion-label color="dark"> {{FiltroAlunoObject.TotalDeFaltas}}
+                </ion-label>
               </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-button (click)="ShowModalAluno()" color="secondary">Ver Perfil </ion-button> 
+              
+           
+              
               <ion-button color="secondary">Exportar Chamada </ion-button>
             </ion-col>
           </ion-row>
@@ -157,6 +175,6 @@
       
 
 
-    </ng-container> -->
+    </ng-container> 
   </ion-grid>
 </ion-content>
