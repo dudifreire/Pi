@@ -58,7 +58,7 @@
           <ion-row>
             <ion-col size="6">
               <ion-list>
-                <ion-item *ngFor="let order of orderList">
+                <ion-item  *ngFor="let order of orderList">
                   <ion-label color="dark" position="stacked">
                     <ion-text color="dark">
                       <strong> Aluno: </strong> {{order.Aluno}}
@@ -111,7 +111,7 @@
             <ion-col size="6">
 
               <ion-list>
-                <ion-item *ngFor="let order of totalPresencas">
+                <ion-item id="totalPresencasHTML" *ngFor="let order of totalPresencas">
                   <ion-label color="dark" position="stacked">
                     <ion-text color="dark">
                       <strong> Data: </strong> {{order.data}}
@@ -168,7 +168,7 @@
               
            
               
-              <ion-button color="secondary">Exportar Chamada </ion-button>
+              <ion-button (click)="createPdf()" color="secondary">Exportar Chamada </ion-button>
             </ion-col>
           </ion-row>
         </ion-card>

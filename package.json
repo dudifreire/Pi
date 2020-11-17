@@ -31,6 +31,8 @@
     "cordova-android": "9.0.0",
     "date-fns": "^2.16.1",
     "format": "^0.2.2",
+    "jspdf": "^2.1.1",
+    "jspdf-autotable": "^3.5.13",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"

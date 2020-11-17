@@ -1,12 +1,14 @@
+import { jsPDF } from 'jspdf';
 import { ModalComponent } from './../modal/profile-modal/modal.component';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HelperService } from './../services/helper.service';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { MenuController, ModalController } from '@ionic/angular';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Plugins, FilesystemDirectory, FilesystemEncoding } from '@capacitor/core';
 import { ListChamadaPage } from '../modal/list-chamada/list-chamada.page';
+
 
 
 const { Filesystem } = Plugins;
@@ -35,20 +37,18 @@ export class Folder3Page implements OnInit {
     TotalDeFaltas:  null,
     totalDeChamadas: null,
     totalDePresencas: null
-    
-  }
+
+  };
   todasAsPresenças = [];
   public nomeAluno = '';
 
 
   constructor(
-    private http: HttpClient,
-    private menuController: MenuController,
-    private inAppBrowser: InAppBrowser,
     private modalCtrl: ModalController,
     private helper: HelperService,
     private fb: FormBuilder,
-    private modalController: ModalController
+    private modalController: ModalController,
+
 
   ) { }
 
@@ -83,25 +83,25 @@ export class Folder3Page implements OnInit {
 
   }
   setFiltroAluno(aluno) {
-    
-    let orderListAluno = this.listChamadas.map(v => ({ alunos: v.aluno, data: v.data }));
-    let todasAsPresenças = [];
+
+    const orderListAluno = this.listChamadas.map(v => ({ alunos: v.aluno, data: v.data }));
+    const todasAsPresenças = [];
     let totalChamadasAtivas;
-    let totalFaltas = [];
-    let totalPresencas = []
-    for (let i of orderListAluno) {
-      for (let j of i.alunos) {
+    const totalFaltas = [];
+    const totalPresencas = [];
+    for (const i of orderListAluno) {
+      for (const j of i.alunos) {
         if (j.Aluno === aluno) {
-          j.data = i.data
+          j.data = i.data;
           todasAsPresenças.push(j);
         }
-        if (j.Aluno === aluno && j.presente === "Sim") {
+        if (j.Aluno === aluno && j.presente === 'Sim') {
 
-          totalPresencas.push(j)
+          totalPresencas.push(j);
         }
-        if (j.Aluno === aluno && j.presente === "Não" || j.Aluno === aluno && j.presente === false ||
+        if (j.Aluno === aluno && j.presente === 'Não' || j.Aluno === aluno && j.presente === false ||
           j.Aluno === aluno && j.presente === null) {
-          totalFaltas.push(j)
+          totalFaltas.push(j);
 
         }
       }
@@ -115,14 +115,14 @@ export class Folder3Page implements OnInit {
       TotalDeFaltas:  totalFaltas.length,
       totalDeChamadas: totalChamadasAtivas,
       totalDePresencas: totalPresencas.length,
-      
-      
-    }
+
+
+    };
     console.log( this.totalFaltas);
     console.log(this.todasAsPresenças);
     console.log(this.totalPresencas);
     console.log(this.FiltroAlunoObject);
-    
+
 
   }
 
@@ -149,9 +149,9 @@ export class Folder3Page implements OnInit {
     const { data } = await modal.onWillDismiss();
     console.log(data);
     console.log(data.tipoLista);
-    console.log(data.aluno)
-    
-    if (data.tipoLista === "data") {
+    console.log(data.aluno);
+
+    if (data.tipoLista === 'data') {
       this.relatorio.patchValue({
         aluno: data.ChamadaSelecionada.aluno,
         data: data.ChamadaSelecionada.data,
@@ -159,7 +159,7 @@ export class Folder3Page implements OnInit {
         obs: data.ChamadaSelecionada.obs,
         professor: data.ChamadaSelecionada.professor
       });
-      
+
       this.orderList = data.ChamadaSelecionada.aluno;
       console.log(this.orderList);
       this.showChamadaList = true;
@@ -168,18 +168,19 @@ export class Folder3Page implements OnInit {
 
     }
 
-    if (data.tipoLista === "aluno") {
-      
+    if (data.tipoLista === 'aluno') {
+
 
       this.setFiltroAluno(data.ChamadaSelecionada);
       this.nomeAluno = data.ChamadaSelecionada;
       this.showChamadaList = false;
       this.showChamadaAlunoList = true;
-      for(let i of data.aluno){
-        if(i.nome === data.ChamadaSelecionada )
-             this.alunoModalData.push(i)
+      for (const i of data.aluno){
+        if (i.nome === data.ChamadaSelecionada ) {
+             this.alunoModalData.push(i);
+        }
       }
-      
+
     }
 
   }
@@ -208,16 +209,19 @@ export class Folder3Page implements OnInit {
   openChamadaList(tipo) {
     this.listChamadas = JSON.parse(localStorage.getItem('chamadaList'));
     console.log(tipo);
-    if (tipo === "aluno") {
-      this.TipoList = "aluno";
+    if (!tipo){
+      this.helper.toast('Selecione um tipo de ordenação', 'warning');
+    }
+    if (tipo === 'aluno') {
+      this.TipoList = 'aluno';
       if (this.listChamadas) {
         this.createListChamadaModal(this.alunosList, this.TipoList);
       } else {
         this.helper.toast('Você ainda não possuí um historico', 'warning');
       }
     }
-    if (tipo === "data") {
-      this.TipoList = "data";
+    if (tipo === 'data') {
+      this.TipoList = 'data';
       if (this.listChamadas) {
         this.createListChamadaModal(this.listChamadas, this.TipoList);
       } else {
@@ -230,6 +234,47 @@ export class Folder3Page implements OnInit {
 
     // console.log(this.historicos);
 
+  }
+
+  createPdf(){
+    const documento = new jsPDF();
+    const test = document.getElementById("totalPresencasHTML");
+    console.log(test)
+    documento.setFont('Courier');
+    documento.setFontSize(20);
+    documento.text('Relatório', 65, 15);
+    
+    documento.setFontSize(12);
+    documento.setFillColor(50, 50, 50);
+    documento.setTextColor(255, 255, 255);
+    documento.rect(10, 20, 30, 8, 'FD');
+    documento.rect(10, 28, 30, 8, 'FD');
+    documento.rect(10, 36, 30, 8, 'FD');
+    
+
+    documento.setFontSize(12);
+    documento.setTextColor(255, 255, 255);
+    documento.text('Aluno', 12, 25);
+    documento.text('Presenças', 12, 33);
+    documento.text('Faltas', 12, 41);
+    documento.html(test, {
+      callback: function (doc) {
+        console.log(doc)
+        doc.save();
+      },
+      x: 10,
+      y: 10
+   });
+
+    documento.rect(10, 20, 30, 8, 'FD');
+    documento.rect(10, 28, 30, 8, 'FD');
+    documento.rect(10, 36, 30, 8, 'FD');
+    documento.setTextColor(0, 0, 0);
+    documento.text(this.nomeAluno, 42, 25);
+    documento.text('Notebook 14\' i7 8GB 1TB', 42, 33);
+    documento.text('R$ 2400,00', 42, 41);
+
+    documento.output('dataurlnewwindow');
   }
 
 
