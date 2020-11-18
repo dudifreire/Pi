@@ -1,4 +1,3 @@
-import { jsPDF } from 'jspdf';
 import { ModalComponent } from './../modal/profile-modal/modal.component';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HelperService } from './../services/helper.service';
@@ -8,12 +7,25 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Plugins, FilesystemDirectory, FilesystemEncoding } from '@capacitor/core';
 import { ListChamadaPage } from '../modal/list-chamada/list-chamada.page';
+import { jsPDF } from 'jspdf'
+import 'jspdf-autotable';
+import { UserOptions } from 'jspdf-autotable';
+
+interface jsPDFWithPlugin extends jsPDF {
+  autoTable: (options: UserOptions) => jsPDF;
+}
+
+
+
 
 
 
 const { Filesystem } = Plugins;
 
 
+//declare const require: any;
+//const jsPDF = require('jspdf');
+//require('jspdf-autotable');
 
 @Component({
   selector: 'app-folder3',
@@ -235,46 +247,30 @@ export class Folder3Page implements OnInit {
     // console.log(this.historicos);
 
   }
-
+  
   createPdf(){
-    const documento = new jsPDF();
+    const doc = new jsPDF('portrait', 'px', 'a4') as jsPDFWithPlugin;
     const test = document.getElementById("totalPresencasHTML");
-    console.log(test)
-    documento.setFont('Courier');
-    documento.setFontSize(20);
-    documento.text('Relatório', 65, 15);
-    
-    documento.setFontSize(12);
-    documento.setFillColor(50, 50, 50);
-    documento.setTextColor(255, 255, 255);
-    documento.rect(10, 20, 30, 8, 'FD');
-    documento.rect(10, 28, 30, 8, 'FD');
-    documento.rect(10, 36, 30, 8, 'FD');
-    
 
-    documento.setFontSize(12);
-    documento.setTextColor(255, 255, 255);
-    documento.text('Aluno', 12, 25);
-    documento.text('Presenças', 12, 33);
-    documento.text('Faltas', 12, 41);
-    documento.html(test, {
-      callback: function (doc) {
-        console.log(doc)
-        doc.save();
-      },
-      x: 10,
-      y: 10
-   });
+    console.log(item);
+    var columns = [];
+    var rows = ["Aluno", "Presente","Data"];
+    columns.push(rows);
+    const all = this.totalPresencas.concat(this.totalFaltas);
+    console.log(all)
+       for(var item of all){
+        doc.autoTable({
+          head: columns,
+          body: [
+            [item.Aluno, item.presente, item.data],
+          ],
+        })
+         } 
 
-    documento.rect(10, 20, 30, 8, 'FD');
-    documento.rect(10, 28, 30, 8, 'FD');
-    documento.rect(10, 36, 30, 8, 'FD');
-    documento.setTextColor(0, 0, 0);
-    documento.text(this.nomeAluno, 42, 25);
-    documento.text('Notebook 14\' i7 8GB 1TB', 42, 33);
-    documento.text('R$ 2400,00', 42, 41);
+   
+    doc.setFontSize(14);
 
-    documento.output('dataurlnewwindow');
+    doc.save('Test.pdf');
   }
 
 
