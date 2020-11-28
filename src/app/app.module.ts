@@ -17,8 +17,6 @@ import { FunctionsService } from './services/functions.service';
 
 
 
-
-
 @NgModule({
   declarations: [AppComponent, CadastroVoluntarioComponent],
   entryComponents: [],

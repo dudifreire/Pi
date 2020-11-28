@@ -1,3 +1,4 @@
+import { ColaboradorServiceService } from './../../services/colaborador-service.service';
 import { ModalController } from '@ionic/angular';
 import { HelperService } from './../../services/helper.service';
 import { Component, OnInit } from '@angular/core';
@@ -21,11 +22,11 @@ export class CadastroVoluntarioComponent implements OnInit {
     private http: HttpClient,
     private router: Router,
     private helperS: HelperService,
-    private modalCtlr: ModalController
+    private modalCtlr: ModalController,
+    private colaboradorS: ColaboradorServiceService
   ) { }
   setForm() {
     this.form = this.fb.group({
-      categoria: [null, [Validators.required]],
       nome: [null, [Validators.required]],
       cpf: [null, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
       email: [null, [Validators.email, Validators.required]],
@@ -78,18 +79,32 @@ export class CadastroVoluntarioComponent implements OnInit {
   }
   ngOnInit() {
     this.setForm();
+    this.colaboradorS.testeApi().subscribe((teste => {
+      console.log(teste);
+    }))
   }
   submit() {
     console.log(this.form.value);
-    localStorage.setItem('cadastroVoluntario', JSON.stringify(this.form.value));
-    this.form.reset();
-    this.router.navigateByUrl('/login');
-    this.helperS.toast(
+
+    this.helperS.showLoader();
+    this.colaboradorS.testeApi().subscribe((teste => {
+      console.log(teste);
+    }))
+    this.colaboradorS.submitCadastro(this.form.value).subscribe((data => {
+      console.log(data);
+      localStorage.setItem('cadastroVoluntario', JSON.stringify(this.form.value));
+      this.form.reset();
+      this.router.navigateByUrl('/login');
+      this.helperS.toast(
       'Dados enviados com sucesso! Será realizada uma validação manual do seu cadastro...'
-    );
-    this.modalCtlr.dismiss({
+        );
+      this.modalCtlr.dismiss({
       dismissed: true
-    });
+        });
+      this.helperS.dismissLoader();  
+
+    }))
+    
   }
 
 

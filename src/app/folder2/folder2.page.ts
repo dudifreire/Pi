@@ -1,3 +1,5 @@
+import { ChamadaService } from './../services/chamada.service';
+import { AlunoService } from './../services/aluno.service';
 import { HelperService } from './../services/helper.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MenuController } from '@ionic/angular';
@@ -6,7 +8,6 @@ import { ModalController } from '@ionic/angular';
 import { ModalComponent } from '../modal/profile-modal/modal.component';
 import { AlertController } from '@ionic/angular';
 import { format } from 'date-fns'
-
 import {
   FormControl,
   FormGroup,
@@ -27,7 +28,9 @@ export class Folder2Page implements OnInit {
     public modalController: ModalController,
     public alertController: AlertController,
     public fb: FormBuilder,
-    public helper: HelperService
+    public helper: HelperService,
+    private alunoService: AlunoService,
+    private chamadaService: ChamadaService
   ) {}
 
   public searchTerm: '';
@@ -53,19 +56,32 @@ export class Folder2Page implements OnInit {
     this.setAlunos()
   }
   setAlunos(){
-    this.alunos = JSON.parse(localStorage.getItem('cadastroAluno'));
+   // this.alunos = JSON.parse(localStorage.getItem('cadastroAluno'));
+   
+   this.alunoService.getAlunos().subscribe((data => {{
+    console.log(data);
+    this.alunos = data._embedded.alunoes
     if(!this.alunos){
       this.alunos = [];
     }
     else{
       this.fullList = this.alunos
+      for(let index of this.alunos){
+        index.presente = 'Não'
+      }
     }
+    console.log(this.alunos);
+    localStorage.setItem('cadastroAluno', JSON.stringify(this.alunos));
+    
+  }}))   
+    
+   
   }
 
   setChamadaForm() {
     this.chamada = this.fb.group({
       aluno: [null],
-      data: [format(new Date(), 'dd/MM/yyyy'), [Validators.required]],
+      data: [this.data, [Validators.required]],
       professor: [null, [Validators.required]],
       categoria: [null, [Validators.required]],
       obs: [null, [Validators.required]],
@@ -73,7 +89,7 @@ export class Folder2Page implements OnInit {
   }
   setChamada() {
     this.setChamadaForm();
-    this.chamadaAtiva = true;
+    
     const professores = JSON.parse(localStorage.getItem('cadastroVoluntario'));
     if (professores) {
       this.colaboradorResponsavel.push(professores);
@@ -108,7 +124,18 @@ export class Folder2Page implements OnInit {
     // tslint:disable-next-line: forin
     for (const index in aluno) {
       const formAluno = {
-        Aluno: aluno[index].nome,
+       // categoria: aluno[index].categoria,
+        id: aluno[index].id,
+        nome: aluno[index].nome,
+      //  responsavel: aluno[index].responsavel,
+      //  foneAluno: aluno[index].foneAluno,
+      //  foneResponsavel: aluno[index].foneResponsavel,
+      //  cep: aluno[index].cep,
+      //  rua: aluno[index].rua,
+      //  bairro: aluno[index].bairro,
+      //  cidade: aluno[index].cidade,
+      //  uf: aluno[index].uf,
+      //  date: aluno[index].date,
         presente: aluno[index].presente,
       };
       arrayAlunosChamada.push(formAluno);
@@ -119,20 +146,26 @@ export class Folder2Page implements OnInit {
       aluno: arrayAlunosChamada,
     });
     console.log(this.chamada.value);
-    console.log(this.chamadaList);
     this.chamadaList.push(this.chamada.value);
     localStorage.setItem('chamadaList', JSON.stringify(this.chamadaList));
-    console.log(this.chamadaList);
+
+    this.chamadaService.submitChamada(this.chamada.value).subscribe((data =>
+      {console.log(data)
+        this.chamada.reset();
+        this.uncheckAll = false;
+        this.helper.toast('Chamada realizada com sucesso!', 'success');
+      
+      }))
   }
 
   submitChamada(aluno) {
     this.fazerChamada(aluno);
-    this.chamada.reset();
-    this.uncheckAll = false;
-    this.helper.toast('Chamada realizada com sucesso!', 'success');
+    
+    
   }
   categoriaChange(categoria) {
     this.alunos = this.fullList;
+    this.chamadaAtiva = true;
     console.log(categoria)
     console.log(this.alunos);
     let alunosCategoriaFilter = [];

@@ -11,7 +11,7 @@
   <!--  <ion-button color="secondary" (click)="setChamada()">Fazer chamada
 
   </ion-button> -->
-  <ng-container *ngIf="chamadaAtiva">
+  <ng-container>
 
     <ion-card>
       <ion-toolbar color="secondary">
@@ -83,7 +83,7 @@
     </ion-card>
 
   </ng-container>
-  <ng-container *ngIf="chamadaAtiva">
+  <ng-container >
     <ion-card>
       <ion-toolbar color="secondary">
         <ion-searchbar slot="end" color="secondary" [(ngModel)]="searchTerm" (ionChange)="setBuscarAlunos()">
@@ -117,7 +117,7 @@
        
         </ion-grid>
       </ion-list>
-      <ion-button color="secondary" [disabled]="chamada.invalid"  (click)="submitChamada(alunos)" expand="block"> FAZER CHAMADA</ion-button>
+      <ion-button color="secondary"  (click)="submitChamada(alunos)" expand="block"> FAZER CHAMADA</ion-button>
     </ion-card>
 
 

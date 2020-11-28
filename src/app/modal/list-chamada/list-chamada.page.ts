@@ -58,7 +58,7 @@ export class ListChamadaPage implements OnInit {
   ngOnInit() {
     console.log(this.listChamadas);
     console.log(this.tipoList);
-    this. setTipoLista();
+    this.setTipoLista();
   }
 
 }

@@ -1,3 +1,5 @@
+import { HelperService } from './../services/helper.service';
+import { AlunoService } from './../services/aluno.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MenuController } from '@ionic/angular';
@@ -13,12 +15,15 @@ import { mustMatch, validarCelular, validarCpf } from '../core/functions';
 
 
 
+
+
 @Component({
   selector: 'app-folder',
   templateUrl: './folder.page.html',
   styleUrls: ['./folder.page.scss'],
 })
 export class FolderPage implements OnInit {
+
   public folder: string;
   isSubmitted = false;
   public tipoCategoria = false;
@@ -34,8 +39,11 @@ export class FolderPage implements OnInit {
     private menu: MenuController,
     public fb: FormBuilder,
     private http: HttpClient,
+    private alunosS: AlunoService,
     private camera: Camera,
+    private HelperService: HelperService,
     private storage: Storage,
+    private alunoService: AlunoService,
     public toastController: ToastController,
     ) { }
 
@@ -93,33 +101,53 @@ export class FolderPage implements OnInit {
     }
   async submitForm(){
 
+
     this.isSubmitted = true;
     if (!this.form.valid) {
       alert('Por favor, preencher todos os campos corretamente');
       return false;
     } else {
       console.log(this.form.value);
-      this.alunos.push(this.form.value);
-      localStorage.setItem('cadastroAluno', JSON.stringify(this.alunos));
+      this.HelperService.showLoader();
+      this.alunosS.submitCadastro(this.form.value).subscribe(( data => { 
+      console.log(data);
+      
+     
+     // const toast = await this.toastController.create({
+     //   message: 'Cadastro Salvo!',
+     //   duration: 2000
+    //  });
+    //  this.alunos.push(this.form.value);
+    //  localStorage.setItem('cadastroAluno', JSON.stringify(this.alunos));
       this.form.reset();
 
-      const toast = await this.toastController.create({
-        message: 'Cadastro Salvo!',
-        duration: 2000
-      });
+   //   toast.present();
+      this.HelperService.toast('Cadastro feito com sucesso!');
+      this.HelperService.dismissLoader();
 
-      toast.present();
+
+      }));
+      
+
+     
 
     }
 
 
   }
   setAlunos(){
-    this.alunos = JSON.parse(localStorage.getItem('cadastroAluno'));
-    if (!this.alunos) {
-      this.alunos = [];
+    this.alunoService.getAlunos().subscribe((data => {{
+      console.log(data);
+      this.alunos = data._embedded
+      console.log(this.alunos);
+      localStorage.setItem('cadastroAluno', JSON.stringify(this.alunos));
+    }}))
+    
+  //  this.alunos = JSON.parse(localStorage.getItem('cadastroAluno'));
+  //  if (!this.alunos) {
+  //    this.alunos = [];
 
-    }
+  //  }
 
   }
   getCep() {
@@ -148,6 +176,7 @@ export class FolderPage implements OnInit {
     this.setForm();
     this.setFormCategoria();
     this.setAlunos();
+    
 
 
 

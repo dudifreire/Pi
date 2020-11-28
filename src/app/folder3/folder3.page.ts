@@ -1,3 +1,4 @@
+import { AlunoService } from './../services/aluno.service';
 import { ModalComponent } from './../modal/profile-modal/modal.component';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HelperService } from './../services/helper.service';
@@ -10,6 +11,7 @@ import { ListChamadaPage } from '../modal/list-chamada/list-chamada.page';
 import { jsPDF } from 'jspdf'
 import 'jspdf-autotable';
 import { UserOptions } from 'jspdf-autotable';
+import { ChamadaService } from '../services/chamada.service';
 
 interface jsPDFWithPlugin extends jsPDF {
   autoTable: (options: UserOptions) => jsPDF;
@@ -60,6 +62,8 @@ export class Folder3Page implements OnInit {
     private helper: HelperService,
     private fb: FormBuilder,
     private modalController: ModalController,
+    private ChamadaS: ChamadaService,
+    private alunoS: AlunoService
 
 
   ) { }
@@ -80,7 +84,12 @@ export class Folder3Page implements OnInit {
 
 
   setListChamada() {
-    this.listChamadas = JSON.parse(localStorage.getItem('chamadaList'));
+    this.ChamadaS.getChamadas().subscribe((chamadas => {
+      console.log(chamadas);
+      this.listChamadas = chamadas;
+    }))
+  //  this.listChamadas = 
+  //  JSON.parse(localStorage.getItem('chamadaList'));
     if (!this.listChamadas) {
       this.listChamadas = [];
     }
@@ -88,31 +97,40 @@ export class Folder3Page implements OnInit {
 
   }
   setAlunosList() {
-    this.alunosList = JSON.parse(localStorage.getItem('cadastroAluno'));
-    if (!this.alunosList) {
+  //  this.alunosList = JSON.parse(localStorage.getItem('cadastroAluno'));
+  this.alunoS.getAlunos().subscribe((data => {{
+    console.log(data);
+    this.alunosList = data._embedded.alunoes
+    if(!this.alunosList){
       this.alunosList = [];
     }
+    console.log(this.alunosList);
+    localStorage.setItem('cadastroAluno', JSON.stringify(this.alunosList));
+    
+  }}))  
 
   }
   setFiltroAluno(aluno) {
-
+    console.log(aluno);
+    console.log(this.listChamadas);
     const orderListAluno = this.listChamadas.map(v => ({ alunos: v.aluno, data: v.data }));
+    console.log(orderListAluno);
     const todasAsPresenças = [];
     let totalChamadasAtivas;
     const totalFaltas = [];
     const totalPresencas = [];
     for (const i of orderListAluno) {
       for (const j of i.alunos) {
-        if (j.Aluno === aluno) {
+        if (j.nome === aluno) {
           j.data = i.data;
           todasAsPresenças.push(j);
         }
-        if (j.Aluno === aluno && j.presente === 'Sim') {
+        if (j.nome === aluno && j.presente === 'Sim') {
 
           totalPresencas.push(j);
         }
-        if (j.Aluno === aluno && j.presente === 'Não' || j.Aluno === aluno && j.presente === false ||
-          j.Aluno === aluno && j.presente === null) {
+        if (j.nome === aluno && j.presente === 'Não' || j.nome === aluno && j.presente === false ||
+          j.nome === aluno && j.presente === null) {
           totalFaltas.push(j);
 
         }
@@ -219,7 +237,11 @@ export class Folder3Page implements OnInit {
   }
 
   openChamadaList(tipo) {
-    this.listChamadas = JSON.parse(localStorage.getItem('chamadaList'));
+//    this.listChamadas = JSON.parse(localStorage.getItem('chamadaList')); 
+   this.ChamadaS.getChamadas().subscribe((chamadas=> {
+     this.listChamadas = chamadas;
+   }));
+
     console.log(tipo);
     if (!tipo){
       this.helper.toast('Selecione um tipo de ordenação', 'warning');
