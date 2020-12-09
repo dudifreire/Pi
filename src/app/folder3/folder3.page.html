@@ -31,6 +31,9 @@
               <ion-select-option name="aluno" value="aluno"
                 >Por Aluno
               </ion-select-option>
+              <ion-select-option name="categoria" value="categoria"
+                >Por Categoria
+              </ion-select-option>
             </ion-select>
           </ion-item>
         </ion-col>
@@ -59,15 +62,19 @@
             <ion-col size="6">
               <ion-list>
                 <ion-item  *ngFor="let order of orderList">
+                  
                   <ion-label color="dark" position="stacked">
                     <ion-text color="dark">
-                      <strong> Aluno: </strong> {{order.nome}}
+                      <strong> ID: </strong> {{order.alunoId}}
+                    </ion-text>
+                    <ion-text color="dark">
+                      <strong> Aluno: </strong> {{order.alunoNome}}
                     </ion-text>
                   </ion-label>
 
                   <ion-label slot="end" position="stacked">
                     <ion-text color="dark"
-                      ><strong> Estava Presente: </strong> {{order.presente}}
+                      ><strong> Presente: </strong> {{order.alunoPresente}}
                     </ion-text>
                   </ion-label>
                 </ion-item>
@@ -95,7 +102,7 @@
                 </ion-label>
                 <ion-input color="dark" formControlName="obs"> </ion-input>
               </ion-item>
-              <ion-button color="secondary">Exportar Chamada </ion-button>
+              <ion-button (click)="createPdf()" color="secondary">Exportar Chamada </ion-button>
             </ion-col>
           </ion-row>
         </ion-card>
@@ -111,16 +118,17 @@
             <ion-col size="6">
 
               <ion-list>
-                <ion-item id="totalPresencasHTML" *ngFor="let order of totalPresencas">
+                <ion-item  *ngFor="let order of totalPresencas">
                   <ion-label color="dark" position="stacked">
                     <ion-text color="dark">
                       <strong> Data: </strong> {{order.data}}
                     </ion-text>
+
                   </ion-label>
 
                   <ion-label  slot="end" position="stacked">
                     <ion-text color="success"
-                      ><strong> Estava Presente </strong> 
+                      ><strong> Presente </strong> 
                     </ion-text>
                   </ion-label>
                 </ion-item>
@@ -140,6 +148,13 @@
               </ion-list>
             </ion-col>
             <ion-col size="6">
+              <ion-item>
+                <ion-label color="dark" position="stacked">
+                  <strong> Categoria </strong>
+                </ion-label>
+                <ion-label color="dark"> {{FiltroAlunoObject.totalDeChamadas}}
+                </ion-label>
+              </ion-item>
               <ion-item>
                 <ion-label color="dark" position="stacked">
                   <strong> Total de chamadas</strong>

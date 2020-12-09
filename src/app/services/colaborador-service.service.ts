@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -17,12 +18,12 @@ export class ColaboradorServiceService {
       headers: headers
     });
   }
-  testeApi() {
+  testeApi():Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
     const url ='http://localhost:8080/colaboradors'
-    return this.http.get(url);
+    return this.http.get<any>(url);
   }
 
 }

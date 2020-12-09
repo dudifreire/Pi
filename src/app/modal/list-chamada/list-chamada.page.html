@@ -12,7 +12,7 @@
   <ion-list>
     <ion-row> 
       <ion-col size="6" *ngFor="let chamada of listChamadas"> 
-    <ion-radio-group name="radioInstalacoes">
+    <ion-radio-group multiple="false" name="radioInstalacoes">
       <ion-item >
         <ion-label>{{chamada.data}}</ion-label>
         <ion-radio slot="start" name={{chamada.data}} [value]="chamada" (click)="selectChamada(chamada)"></ion-radio>
@@ -31,7 +31,47 @@
   <ion-list>
     <ion-row> 
       <ion-col size="6" *ngFor="let alunos of listChamadas "> 
-    <ion-radio-group name="radioInstalacoes">
+    <ion-radio-group multiple="false" name="radioInstalacoes">
+      <ion-item >
+        <ion-label>{{alunos.nome}}</ion-label>
+        <ion-radio slot="start" name={{alunos.data}} [value]="alunos.nome" (click)="selectChamada(alunos.nome)"></ion-radio>
+      </ion-item>
+      
+
+    </ion-radio-group>
+  </ion-col>
+ 
+  </ion-row>
+  <ion-button color="secondary" style="bottom: 0;" (click)="dismiss()" expand="block">Selecionar </ion-button>
+  <ion-button color="secondary" style="bottom: 0;" (click)="cancel()" expand="block">Cancelar </ion-button>
+  </ion-list>
+  
+
+
+</ng-container>
+<ng-container *ngIf="setTipoList==='categoria'">
+<ion-row> 
+  <ion-col>
+    <ion-item>
+
+      <ion-label style="font-size: 20px;" position="stacked"> <strong>Categoria do Aluno </strong>
+        <ion-text color="danger">*</ion-text>
+      </ion-label>  
+      <ion-select style="font-size: 12px;" #c (ionChange)="categoriaChange(c.value)" name="Categoria"
+        placeholder="Categoria"> Categoria
+        <ion-select-option name="sub9" value="sub9"> sub 9 </ion-select-option>
+        <ion-select-option name="sub11" value="sub11"> sub 11 </ion-select-option>
+        <ion-select-option name="sub13" value="sub13"> sub 13 </ion-select-option>
+        <ion-select-option name="sub16" value="sub16"> sub 16 </ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-col>
+</ion-row>
+
+  <ion-list *ngIf="chamadaAtiva">
+    <ion-row> 
+      <ion-col size="6" *ngFor="let alunos of listChamadas "> 
+    <ion-radio-group multiple="false" name="radioInstalacoes">
       <ion-item >
         <ion-label>{{alunos.nome}}</ion-label>
         <ion-radio slot="start" name={{alunos.data}} [value]="alunos.nome" (click)="selectChamada(alunos.nome)"></ion-radio>

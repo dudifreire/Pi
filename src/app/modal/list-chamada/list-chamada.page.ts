@@ -10,7 +10,8 @@ import { HelperService } from 'src/app/services/helper.service';
 export class ListChamadaPage implements OnInit {
   @Input() listChamadas: any[];
   @Input() tipoList: string;
-  
+  fullList: any [];
+  chamadaAtiva = false;
   setTipoList;
 
   ChamadaSelecionada;
@@ -49,10 +50,23 @@ export class ListChamadaPage implements OnInit {
     if(this.tipoList === "data"){
       this.setTipoList = "data"
     }
-    if(this.tipoList === "colaborador"){
-      this.setTipoList = "colaborador"
+    if(this.tipoList === "categoria"){
+      this.fullList = this.listChamadas;
+      this.setTipoList = "categoria"
     }
 
+  }
+  categoriaChange(categoria){
+    this.listChamadas = this.fullList;
+    this.chamadaAtiva = true;
+    let alunosCategoriaFilter = [];
+    for(let i of this.listChamadas){
+      if(i.categoria === categoria){ 
+        alunosCategoriaFilter.push(i);
+      }
+    }
+    this.listChamadas = alunosCategoriaFilter
+    this.chamadaAtiva = true;
   }
 
   ngOnInit() {

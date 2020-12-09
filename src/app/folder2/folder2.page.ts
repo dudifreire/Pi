@@ -1,3 +1,4 @@
+import { ColaboradorServiceService } from './../services/colaborador-service.service';
 import { ChamadaService } from './../services/chamada.service';
 import { AlunoService } from './../services/aluno.service';
 import { HelperService } from './../services/helper.service';
@@ -30,7 +31,8 @@ export class Folder2Page implements OnInit {
     public fb: FormBuilder,
     public helper: HelperService,
     private alunoService: AlunoService,
-    private chamadaService: ChamadaService
+    private chamadaService: ChamadaService,
+    private colaboradorS: ColaboradorServiceService
   ) {}
 
   public searchTerm: '';
@@ -43,7 +45,7 @@ export class Folder2Page implements OnInit {
   public formAlunos;
   public showAlunosList = false;
   public uncheckAll = false;
-  public data = format(new Date(), 'dd/MM/yyyy')
+  public data = format(new Date(), 'dd/MM/yyyy hh:mm')
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
    slices = 12;
 
@@ -51,7 +53,6 @@ export class Folder2Page implements OnInit {
 
     this.menu.enable(true, 'main-menu');
     this.setChamada();
-    console.log(this.alunos);
     this.setListChamada();
     this.setAlunos()
   }
@@ -59,7 +60,6 @@ export class Folder2Page implements OnInit {
    // this.alunos = JSON.parse(localStorage.getItem('cadastroAluno'));
    
    this.alunoService.getAlunos().subscribe((data => {{
-    console.log(data);
     this.alunos = data._embedded.alunoes
     if(!this.alunos){
       this.alunos = [];
@@ -90,21 +90,19 @@ export class Folder2Page implements OnInit {
   setChamada() {
     this.setChamadaForm();
     
-    const professores = JSON.parse(localStorage.getItem('cadastroVoluntario'));
-    if (professores) {
-      this.colaboradorResponsavel.push(professores);
-    }
+    this.colaboradorS.testeApi().subscribe((
+      colaboradores => {
+        console.log(colaboradores._embedded.colaboradors);
+        this.colaboradorResponsavel = colaboradores._embedded.colaboradors
+      }
+    ))
   }
   setPresente(value, index: number) {
-    console.log(value);
     if(value=true){
       this.alunos[index].presente = 'Sim';
     }
-    
-    
-    console.log(this.alunos[index].presente);
+  } 
 
-  }
   setListChamada() {
     this.chamadaList = JSON.parse(localStorage.getItem('chamadaList'));
     if (!this.chamadaList) {
@@ -119,36 +117,24 @@ export class Folder2Page implements OnInit {
     }
   }
   fazerChamada(aluno) {
-    console.log(this.chamadaList);
     const arrayAlunosChamada = [];
     // tslint:disable-next-line: forin
     for (const index in aluno) {
       const formAluno = {
-       // categoria: aluno[index].categoria,
         id: aluno[index].id,
         nome: aluno[index].nome,
-      //  responsavel: aluno[index].responsavel,
-      //  foneAluno: aluno[index].foneAluno,
-      //  foneResponsavel: aluno[index].foneResponsavel,
-      //  cep: aluno[index].cep,
-      //  rua: aluno[index].rua,
-      //  bairro: aluno[index].bairro,
-      //  cidade: aluno[index].cidade,
-      //  uf: aluno[index].uf,
-      //  date: aluno[index].date,
         presente: aluno[index].presente,
+        categoria: aluno[index].categoria
       };
       arrayAlunosChamada.push(formAluno);
-      console.log(formAluno);
     }
-    console.log(arrayAlunosChamada);
     this.chamada.patchValue({
       aluno: arrayAlunosChamada,
     });
-    console.log(this.chamada.value);
+    
     this.chamadaList.push(this.chamada.value);
     localStorage.setItem('chamadaList', JSON.stringify(this.chamadaList));
-
+    console.log(this.chamada.value); 
     this.chamadaService.submitChamada(this.chamada.value).subscribe((data =>
       {console.log(data)
         this.chamada.reset();
@@ -166,15 +152,12 @@ export class Folder2Page implements OnInit {
   categoriaChange(categoria) {
     this.alunos = this.fullList;
     this.chamadaAtiva = true;
-    console.log(categoria)
-    console.log(this.alunos);
     let alunosCategoriaFilter = [];
     for(let i of this.alunos){
       if(i.categoria === categoria){ 
         alunosCategoriaFilter.push(i);
       }
     }
-    console.log(alunosCategoriaFilter);
     this.alunos = alunosCategoriaFilter
     this.showAlunosList = true;
   }
@@ -207,13 +190,13 @@ export class Folder2Page implements OnInit {
       this.alunos.splice(index, 1);
     }
   }
+
   BuscarAlunos(searchTerm) {
     return this.alunos.filter((item) => {
       return item.nome.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
     });
   }
   ionViewDidEnter() {
-    // this.setListChamada();
   }
 
   async ConfirmarDelete(item) {
@@ -227,7 +210,6 @@ export class Folder2Page implements OnInit {
           cssClass: 'secondary',
           handler: () => {
             this.removeUser(item);
-            console.log('Confirm Cancel');
             this.modalController.dismiss({
               dismissed: true,
             });
@@ -236,7 +218,6 @@ export class Folder2Page implements OnInit {
         {
           text: 'No',
           handler: () => {
-            console.log('Confirm Ok');
           },
         },
       ],

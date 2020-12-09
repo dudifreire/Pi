@@ -85,52 +85,44 @@ export class Folder3Page implements OnInit {
 
   setListChamada() {
     this.ChamadaS.getChamadas().subscribe((chamadas => {
-      console.log(chamadas);
       this.listChamadas = chamadas;
+      console.log(chamadas);
     }))
-  //  this.listChamadas = 
-  //  JSON.parse(localStorage.getItem('chamadaList'));
     if (!this.listChamadas) {
       this.listChamadas = [];
     }
-    console.log(this.listChamadas);
 
   }
   setAlunosList() {
-  //  this.alunosList = JSON.parse(localStorage.getItem('cadastroAluno'));
   this.alunoS.getAlunos().subscribe((data => {{
-    console.log(data);
     this.alunosList = data._embedded.alunoes
     if(!this.alunosList){
       this.alunosList = [];
     }
-    console.log(this.alunosList);
     localStorage.setItem('cadastroAluno', JSON.stringify(this.alunosList));
     
   }}))  
 
   }
   setFiltroAluno(aluno) {
-    console.log(aluno);
-    console.log(this.listChamadas);
-    const orderListAluno = this.listChamadas.map(v => ({ alunos: v.aluno, data: v.data }));
-    console.log(orderListAluno);
+    const orderListAluno = this.listChamadas.map(v => ({ alunos: v.listChamada, data: v.data }));
+
     const todasAsPresenças = [];
     let totalChamadasAtivas;
     const totalFaltas = [];
     const totalPresencas = [];
     for (const i of orderListAluno) {
       for (const j of i.alunos) {
-        if (j.nome === aluno) {
+        if (j.alunoNome === aluno) {
           j.data = i.data;
           todasAsPresenças.push(j);
         }
-        if (j.nome === aluno && j.presente === 'Sim') {
+        if (j.alunoNome === aluno && j.alunoPresente === 'Sim') {
 
           totalPresencas.push(j);
         }
-        if (j.nome === aluno && j.presente === 'Não' || j.nome === aluno && j.presente === false ||
-          j.nome === aluno && j.presente === null) {
+        if (j.alunoNome === aluno && j.alunoPresente === 'Não' || j.alunoNome === aluno && j.alunoPresente === false ||
+          j.alunoNome === aluno && j.alunoPresente === null) {
           totalFaltas.push(j);
 
         }
@@ -139,7 +131,9 @@ export class Folder3Page implements OnInit {
     totalChamadasAtivas = todasAsPresenças.length;
 
     this.totalFaltas = totalFaltas;
+    console.log(this.totalFaltas);
     this.todasAsPresenças = todasAsPresenças;
+    console.log(this.todasAsPresenças);
     this.totalPresencas = totalPresencas;
     this.FiltroAlunoObject = {
       TotalDeFaltas:  totalFaltas.length,
@@ -148,10 +142,6 @@ export class Folder3Page implements OnInit {
 
 
     };
-    console.log( this.totalFaltas);
-    console.log(this.todasAsPresenças);
-    console.log(this.totalPresencas);
-    console.log(this.FiltroAlunoObject);
 
 
   }
@@ -177,20 +167,17 @@ export class Folder3Page implements OnInit {
 
   async getDadosModalChamada(modal: HTMLIonModalElement, listChamadas) {
     const { data } = await modal.onWillDismiss();
-    console.log(data);
-    console.log(data.tipoLista);
-    console.log(data.aluno);
-
-    if (data.tipoLista === 'data') {
+   if (data.tipoLista === 'data') {
+      console.log(data);
       this.relatorio.patchValue({
-        aluno: data.ChamadaSelecionada.aluno,
+        aluno: data.ChamadaSelecionada.listChamada,
         data: data.ChamadaSelecionada.data,
         categoria: data.ChamadaSelecionada.categoria,
         obs: data.ChamadaSelecionada.obs,
         professor: data.ChamadaSelecionada.professor
       });
-
-      this.orderList = data.ChamadaSelecionada.aluno;
+      console.log(this.relatorio.value)
+      this.orderList = data.ChamadaSelecionada.listChamada;
       console.log(this.orderList);
       this.showChamadaList = true;
       this.showChamadaAlunoList = false;
@@ -198,7 +185,7 @@ export class Folder3Page implements OnInit {
 
     }
 
-    if (data.tipoLista === 'aluno') {
+    if (data.tipoLista === 'aluno' || data.tipoLista === 'categoria' ) {
 
 
       this.setFiltroAluno(data.ChamadaSelecionada);
@@ -237,12 +224,7 @@ export class Folder3Page implements OnInit {
   }
 
   openChamadaList(tipo) {
-//    this.listChamadas = JSON.parse(localStorage.getItem('chamadaList')); 
-   this.ChamadaS.getChamadas().subscribe((chamadas=> {
-     this.listChamadas = chamadas;
-   }));
 
-    console.log(tipo);
     if (!tipo){
       this.helper.toast('Selecione um tipo de ordenação', 'warning');
     }
@@ -257,34 +239,41 @@ export class Folder3Page implements OnInit {
     if (tipo === 'data') {
       this.TipoList = 'data';
       if (this.listChamadas) {
+        console.log(this.listChamadas);
         this.createListChamadaModal(this.listChamadas, this.TipoList);
       } else {
         this.helper.toast('Você ainda não possuí um historico', 'warning');
       }
-
-
-
     }
 
-    // console.log(this.historicos);
+    if (tipo === 'categoria') {
+      this.TipoList = 'categoria';
+      if (this.listChamadas) {
+        this.createListChamadaModal(this.alunosList, this.TipoList);
+      } else {
+        this.helper.toast('Você ainda não possuí um historico', 'warning');
+      }
+    }
+
+  
 
   }
   
   createPdf(){
     const doc = new jsPDF('portrait', 'px', 'a4') as jsPDFWithPlugin;
-    const test = document.getElementById("totalPresencasHTML");
+    if(this.TipoList = 'data'){
 
-    console.log(item);
-    var columns = [];
-    var rows = ["Aluno", "Presente","Data"];
-    columns.push(rows);
-    const all = this.totalPresencas.concat(this.totalFaltas);
-    console.log(all)
-       for(var item of all){
+      var columns2 = [];
+    var rows2 = ["ID:","Aluno:","Categoria:","Data:", "Presente:"];
+    columns2.push(rows2);
+    const all2 = this.orderList;
+    console.log(all2)
+       for(var item of all2){
+         console.log(item);
         doc.autoTable({
-          head: columns,
+          head: columns2,
           body: [
-            [item.Aluno, item.presente, item.data],
+            [item.alunoId, item.alunoNome, item.alunoCategoria, item.timestamp, item.alunoPresente],
           ],
         })
          } 
@@ -293,61 +282,34 @@ export class Folder3Page implements OnInit {
     doc.setFontSize(14);
 
     doc.save('Test.pdf');
-  }
-
-
-
-
-
-
-
-
-
-
-  //     const url = 'https://api.github.com/repos/Suporte-esal/teste/contents/09591821956/outubro/outubro.pdf?ref=main'
-  // this.pdf = res;
-  // const linkSource = 'data:application/pdf;base64,' + this.pdf.content;
-  // const downloadLink = document.createElement("a");
-  // const fileName = "sample.pdf";
-  // downloadLink.href = linkSource;
-  // downloadLink.download = fileName;
-  // downloadLink.click();
-  // https://forum.ionicframework.com/t/capacitor-writefile-saving-pdf-file-is-in-invalid-format/158633/5
-
-
-
-
-
-
-  async fileWrite(pdf, index) {
-    try {
-      const result = await Filesystem.writeFile({
-        path: index,
-        data: pdf,
-        directory: FilesystemDirectory.Documents,
-        encoding: FilesystemEncoding.UTF8
-      });
-      console.log('Wrote file', result);
-    } catch (e) {
-      console.error('Unable to write file', e);
+    
     }
-  }
+    else{
+      var columns = [];
+      var rows = ["ID:","Aluno:","Categoria:","Data:", "Presente:"];
+      columns.push(rows);
+      const all = this.totalPresencas.concat(this.totalFaltas);
+      console.log(all)
+         for(var item of all){
+           console.log(item);
+          doc.autoTable({
+            head: columns,
+            body: [
+              [item.alunoId, item.alunoNome, item.alunoCategoria, item.timestamp, item.alunoPresente],
+            ],
+          })
+           } 
+  
+     
+      doc.setFontSize(14);
+  
+      doc.save('Test.pdf');
+    }
 
-  async readFilePath(blob) {
-    // Here's an example of reading a file with a full file path. Use this to
-    // read binary data (base64 encoded) from plugins that return File URIs, such as
-    // the Camera.
-    try {
-      const path = 'Documento.docx';
-      const data = await Filesystem.readFile({
-        path,
-        directory: FilesystemDirectory.Documents
-      });
-      console.log(data);
+
+
+
     }
-    finally {
-      console.log('teste');
-    }
-  }
+    
 
 }
