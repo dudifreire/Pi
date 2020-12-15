@@ -4,13 +4,13 @@ ion-menu-button {
 
 
 ion-content{
-  --background: rgb(1, 34, 0) url("/assets/bitmap.PNG") no-repeat center center / cover !important;
+  --background: rgb(1, 34, 0) url("/assets/bitmap.png") no-repeat center center / cover !important;
 
 }
 ion-content{ 
     --background: none;
     border: 3px solid rgb(1, 34, 0);
-    background-image: url("/assets/bitmap.PNG");
+    background-image: url("/assets/bitmap.png");
     background-repeat: no-repeat;
     background-size: cover;
 }
